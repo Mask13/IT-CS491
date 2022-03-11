@@ -2,6 +2,12 @@
 <html>
   <head>
     <title>Register</title>
+    <button style= "float:right;"type="button" onclick="location.href = 'logout.php';"
+          name="Login"> Logout
+    </button>
+    <button style= "float:right;"type="button" onclick="location.href = 'home.html';"
+          name="Login"> Home
+    </button>
   </head>
   <body>
     <form name="Intake" id="Intake" method="POST">
