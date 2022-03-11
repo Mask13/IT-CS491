@@ -1,3 +1,52 @@
+<?php
+require("config.php");
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+session_start();
+
+if(isset($_POST['username']) && isset($_POST['password'])){
+	$pass = $_POST['password'];
+	$username = $_POST['username'];
+	//$pass = password_hash($pass, PASSWORD_BCRYPT);
+	
+    $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+	$db = new PDO($connection_string, $dbuser, $dbpass);
+	
+	Try{
+		 $stmt = $db->prepare("SELECT username, password, id from `users` where username = :username LIMIT 1");
+		 $params = array(":username"=> $username);
+         $stmt->execute($params);
+		 $result = $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+	
+	catch(Exception $e){
+		echo $e->getMessage();
+		exit();
+	}
+	//finally{}
+	if($result){
+		$userpassword = $result['password'];
+		 if(password_verify($pass, $userpassword)){
+            //$_SESSION['IsAdmin'] = $result['IsAdmin'];
+            $_SESSION['ID'] = $result['id'];
+			 echo'<html><script type="text/javascript">window.open("register.php","_self");</script></html>';
+		 }
+		 
+		 else{
+			 echo "something wrong mate";
+		 }
+	}
+	
+	else{
+			 echo "something wrong ";
+		 }
+	
+	
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -14,32 +63,3 @@
     		</form></center><font>
   </body>
 </html>
-
-<?php
-if(isset($_POST['username']) && isset($_POST['password'])){
-	$pass = $_POST['password'];
-	//$pass = password_hash($pass, PASSWORD_BCRYPT);
-	require("config.php");
-    $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-	
-	Try{
-		 $stmt = $db->prepare("SELECT username, password, id from `users` where username = :username LIMIT 1");
-		 $params = array(":username"=> $userName);
-         $stmt->execute($params);
-		 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-	}
-	finally{}
-	if($result){
-		$userpassword = $result['password'];
-		 if(password_verify($pass, $userpassword)){
-            //$_SESSION['IsAdmin'] = $result['IsAdmin'];
-            $_SESSION['UID'] = $result['UID'];
-			 echo'<html><script type="text/javascript">window.open("register.php","_self");</script></html>';
-		 }
-	}
-	
-	
-}
-
-
-?>
