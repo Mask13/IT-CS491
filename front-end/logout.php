@@ -9,7 +9,7 @@
       <center><form name="loginform" id="myForm" method="POST"><br>
           <center style="font-size: 50px; position: relative; color:white" > You have Logged Out.</center><br>
           <center style="font-size: 15px; position: relative; color:gray" > Click on Login to Log back in.</center><br>
-          <button style="position: relative; bottom: 20px;"class = "button" onclick="location.href = 'login.php';"
+          <button style="position: relative; bottom: 20px;"class = "button" onclick="location.href = 'index.php';"
             type="button" name="Login"> Login</button>
   		</form></center>
     </div>
