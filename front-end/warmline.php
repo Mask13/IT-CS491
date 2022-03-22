@@ -1,3 +1,10 @@
+<?php
+require("config.php");
+session_start();
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+ ?>
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -58,7 +65,7 @@
         <option value="Returning CMO Family">Returning CMO Family</option>
       </select><br>
       <label for="CallerRefered">Caller Refered By:</label>
-      <select name="TypeOfCaller">
+      <select name="CallerRefered">
         <option value="DCPP">DCPP</option>
         <option value="Web Or Internet">Web/Internet</option>
         <option value="Mobile Response">Mobile Response</option>
@@ -77,93 +84,93 @@
 
       <font size="3"> Reason for Call/Issues Disscused: </font><br>
 
-      <input type="checkbox" name="Food" value="Food">
+      <input type="checkbox" name="Reason[]" value="Food">
       <label for="Food">Food</label><br>
 
-      <input type="checkbox" name="MentalHealth" value="Mental Health">
+      <input type="checkbox" name="Reason[]" value="Mental Health">
       <label for="MentalHealth">Mental Health</label><br>
 
-      <input type="checkbox" name="Transportation" value="Transportation">
+      <input type="checkbox" name="Reason[]" value="Transportation">
       <label for="Transportation">Transportation</label><br>
 
-      <input type="checkbox" name="DomesticViolence" value="DomesticViolence">
+      <input type="checkbox" name="Reason[]" value="DomesticViolence">
       <label for="DomesticViolence">Domestic Violence</label><br>
 
-      <input type="checkbox" name="MedicalInformation" value="MedicalInformation">
+      <input type="checkbox" name="Reason[]" value="MedicalInformation">
       <label for="MedicalInformation">Medical Information</label><br>
 
-      <input type="checkbox" name="Shelter" value="Shelter">
+      <input type="checkbox" name="Reason[]" value="Shelter">
       <label for="Shelter">Shelter</label><br>
 
-      <input type="checkbox" name="School" value="School">
+      <input type="checkbox" name="Reason[]" value="School">
       <label for="School">School</label><br>
 
-      <input type="checkbox" name="Leagal" value="Leagal">
+      <input type="checkbox" name="Reason[]" value="Leagal">
       <label for="Leagal">Leagal</label><br>
 
-      <input type="checkbox" name="Housing" value="Housing">
+      <input type="checkbox" name="Reason[]" value="Housing">
       <label for="Housing">Housing</label><br>
 
-      <input type="checkbox" name="Employment" value="Employment">
+      <input type="checkbox" name="Reason[]" value="Employment">
       <label for="Employment">Employment</label><br>
 
-      <input type="checkbox" name="Custody" value="Custody">
+      <input type="checkbox" name="Reason[]" value="Custody">
       <label for="Custody">Custody</label><br>
 
-      <input type="checkbox" name="FamilySatisfactionSurvey" value="FamilySatisfactionSurvey">
+      <input type="checkbox" name="Reason[]" value="FamilySatisfactionSurvey">
       <label for="FamilySatisfactionSurvey">Family Satisfaction Survey</label><br>
 
-      <input type="checkbox" name="DDD" value="DDD">
+      <input type="checkbox" name="Reason[]" value="DDD">
       <label for="DDD">DDD</label><br>
 
-      <input type="checkbox" name="SubstanceRelated" value="SubstanceRelated">
+      <input type="checkbox" name="Reason[]" value="SubstanceRelated">
       <label for="SubstanceRelated">Substance Related Issue/Program</label><br>
 
-      <input type="checkbox" name="SubstanceAbuseRelated" value="SubstanceAbuseRelated">
+      <input type="checkbox" name="Reason[]" value="SubstanceAbuseRelated">
       <label for="SubstanceAbuseRelated">Substance Abuse Related/Treatment</label><br>
 
       <font size="3"> Resources/Referrals: </font><br>
 
-      <input type="checkbox" name="NewsLetter" value="NewsLetter">
+      <input type="checkbox" name="Resources[]" value="NewsLetter">
       <label for="NewsLetter">News Letter</label><br>
 
-      <input type="checkbox" name="Workshop" value="Workshop">
+      <input type="checkbox" name="Resources[]" value="Workshop">
       <label for="Workshop">Workshop</label><br>
 
-      <input type="checkbox" name="FamilySupport" value="FamilySupport">
+      <input type="checkbox" name="Resources[]" value="FamilySupport">
       <label for="FamilySupport">Family Support</label><br>
 
-      <input type="checkbox" name="YouthPartnership" value="YouthPartnership">
+      <input type="checkbox" name="Resources[]" value="YouthPartnership">
       <label for="YouthPartnership">Youth Partnership</label><br>
 
-      <input type="checkbox" name="Presentation" value="Presentation">
+      <input type="checkbox" name="Resources[]" value="Presentation">
       <label for="Presentation">Presentation</label><br>
 
-      <input type="checkbox" name="Training" value="Training">
+      <input type="checkbox" name="Resources[]" value="Training">
       <label for="Training">Training</label><br>
 
-      <input type="checkbox" name="SupportGroup" value="SupportGroup">
+      <input type="checkbox" name="Resources[]" value="SupportGroup">
       <label for="SupportGroup">Support Group</label><br>
 
-      <input type="checkbox" name="SupportTelephoneCouseling" value="SupportTelephoneCouseling">
+      <input type="checkbox" name="Resources[]" value="SupportTelephoneCouseling">
       <label for="SupportTelephoneCouseling">Support Telephone Counseling</label><br>
 
-      <input type="checkbox" name="OtherCommunityResource" value="OtherCommunityResource">
+      <input type="checkbox" name="Resources[]" value="OtherCommunityResource">
       <label for="OtherCommunityResource">Other Community Resource</label><br>
 
-      <input type="checkbox" name="PreformCare" value="PreformCare">
+      <input type="checkbox" name="Resources[]" value="PreformCare">
       <label for="PreformCare">Preform Care</label><br>
 
-      <input type="checkbox" name="DDD" value="DDD">
+      <input type="checkbox" name="Resources[]" value="DDD">
       <label for="DDD">DDD</label><br>
 
-      <input type="checkbox" name="SubstanceRelated" value="SubstanceRelated">
+      <input type="checkbox" name="Resources[]" value="SubstanceRelated">
       <label for="SubstanceRelated">Substance Related Issue/Program</label><br>
 
-      <input type="checkbox" name="SubstanceAbuseRelated" value="SubstanceAbuseRelated">
+      <input type="checkbox" name="Resources[]" value="SubstanceAbuseRelated">
       <label for="SubstanceAbuseRelated">Substance Abuse Related/Treatment</label><br>
 
-      <input type="checkbox" name="PEP" value="PEP">
+      <input type="checkbox" name="Resources[]" value="PEP">
       <label for="PEP">PEP/Parents Anonymous</label><br>
 
       <label for="TimeSpentSupport">Time Spent - Support Level</label>
@@ -179,8 +186,60 @@
         <option value="High Level of Support">Low Level of Support</option>
       </select><br>
 
-      <label for="TimeSpentSupport">Time Spent - Warmline Contact</label>
-      <input type="number" name="TimeSpentSupport"> Minutes</input><br>
+      <label for="TimeSpentWarm">Time Spent - Warmline Contact</label>
+      <input type="number" name="TimeSpentWarm"> Minutes</input><br>
+	   <input type="submit" name="register"/>
     </form>
   </body>
 </html>
+
+<?php
+	
+	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+if($_POST){
+	var_dump($_POST);
+	//var_dump($_POST["firstName"]);
+
+	try{
+		$db = new PDO($connection_string, $dbuser, $dbpass);
+		$stmt = $db->prepare("INSERT INTO `warmline` 
+							VALUES (:contactLocation, :supportlevel, :typeofcaller, :callerreferedby, :reasonforcall, :resources, :timespentsupport, 
+									:notes, :warmcontact, :timespentwarm, DEFAULT)");
+									
+		if ($_POST["Reason"]){
+			$reason_str = implode (", ", $_POST["Reason"]);
+		}
+		
+		else{
+			$reason_str = NULL;
+		}
+		
+		if ($_POST["Resources"]){
+			$resources_str = implode (", ", $_POST["Resources"]);
+		}
+		
+		else{
+			$resources_str = NULL;
+		}
+		
+		
+		$params = array(":contactLocation"=> $_POST["contactLocation"],":supportlevel"=> $_POST["SupportLevel"], ":timespentsupport"=> $_POST["TimeSpentSupport"],
+						":typeofcaller"=> $_POST["TypeOfCaller"], ":callerreferedby"=> $_POST["CallerRefered"], ":reasonforcall"=> $reason_str,
+						":resources"=> $resources_str, ":notes"=> $_POST["Notes"], ":warmcontact"=> $_POST["WarmlineContact"], ":timespentwarm"=> $_POST["TimeSpentWarm"]);
+		$stmt->execute($params);
+		
+		//$id = $db->lastInsertId();
+		
+
+		
+		//var_dump($id);
+        //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+        }
+        catch(Exception $e){
+                echo $e->getMessage();
+                exit();
+        }
+	}
+ ?>
