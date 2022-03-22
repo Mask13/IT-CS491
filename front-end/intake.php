@@ -1,3 +1,10 @@
+<?php
+require("config.php");
+session_start();
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+ ?>
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -72,7 +79,7 @@
         <option value="Common Law">Common Law</option>
       </select><br>
       <label for="homePhone">Home Phone:</label>
-      <input type="tel" id="homePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="homePhone"><br>
+      <input type="tel" id="homePhone" name="homePhone"><br>
       <label for="careManager">Care Manager:</label>
       <select name="careManager">
         <option value="Single">Sample</option>
@@ -225,3 +232,46 @@
     </form>
   </body>
 </html>
+
+<?php 
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+if($_POST){
+	//var_dump($_POST);
+	//var_dump($_POST["firstName"]);
+
+	try{
+		$db = new PDO($connection_string, $dbuser, $dbpass);
+		 $stmt = $db->prepare("INSERT INTO `family`
+                        VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
+								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
+								:primarylanguage, :otherlanguage, :childrenreceivingservices)");
+		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
+						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
+						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
+						":maritalstatus"=> $_POST["maritalStatus"], ":homephone"=> $_POST["homePhone"], ":referred"=> $_POST["referedby"],
+						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
+						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"]);
+		//var_dump($params)
+		$stmt->execute($params);
+		$id = $db->lastInsertId();
+		
+		$stmt = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, DEFAULT, :caremanager, :dyfscontact, :id)");
+		
+		$params = array(":programstartdate"=> $_POST["ProgramStartDate"],":caremanager"=> $_POST["careManager"], 
+						":dyfscontact"=> $_POST["DYFSContact"], ":id"=> $id);
+		$stmt->execute($params);
+		
+		//var_dump($id);
+        //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+        }
+        catch(Exception $e){
+                echo $e->getMessage();
+                exit();
+        }
+	}
+
+
+
+?>
