@@ -51,7 +51,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		 if(password_verify($pass, $userpassword)){
             //$_SESSION['IsAdmin'] = $result['IsAdmin'];
             $_SESSION['ID'] = $result['id'];
-			echo "<script> ; window.location.href='register.php'; </script>";
+			echo "<script> ; window.location.href='home.html'; </script>";
 			 //echo'<html><script type="text/javascript">window.open("register.php","_self");</script></html>';
 			 //header("Location: register.php");
 		 }
