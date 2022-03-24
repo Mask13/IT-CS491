@@ -160,43 +160,43 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
       <font size="3"> Childs Diagnosis: </font><br>
 
-      <input type="checkbox" name="ImpulseControl" value="ImpulseControl">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="ImpulseControl">
       <label for="ImpulseControl">ImpulseControl</label><br>
 
-      <input type="checkbox" name="AdjustmentDisorder" value="AdjustmentDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AdjustmentDisorder">
       <label for="AdjustmentDisorder">Adjustment Disorder</label><br>
 
-      <input type="checkbox" name="AttentionDeficient" value="AttentionDeficient">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AttentionDeficient">
       <label for="AttentionDeficient">Attention Deficient</label><br>
 
-      <input type="checkbox" name="Schizophrenia" value="Schizophrenia">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="Schizophrenia">
       <label for="Schizophrenia">Schizophrenia</label><br>
 
-      <input type="checkbox" name="MoodDisorder" value="MoodDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="MoodDisorder">
       <label for="MoodDisorder">Mood Disorder</label><br>
 
-      <input type="checkbox" name="PervasiveDev" value="PervasiveDev">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="PervasiveDev">
       <label for="PervasiveDev">Pervasive Development Disorder</label><br>
 
-      <input type="checkbox" name="AnxientyDisorder" value="AnxientyDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AnxientyDisorder">
       <label for="AnxientyDisorder">Anxienty Disorder</label><br>
 
-      <input type="checkbox" name="SubstanceRelated" value="SubstanceRelated">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="SubstanceRelated">
       <label for="SubstanceRelated">Substance Related</label><br>
 
-      <input type="checkbox" name="OtherDisorder" value="OtherDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherDisorder">
       <label for="OtherDisorder">Other Disorder</label><br>
 
-      <input type="checkbox" name="OtherCondition" value="OtherCondition">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherCondition">
       <label for="OtherCondition">Other Condition</label><br>
 
-      <input type="checkbox" name="BiPolar" value="BiPolar">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="BiPolar">
       <label for="BiPolar">Bi Polar</label><br>
 
-      <input type="checkbox" name="OCD" value="OCD">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OCD">
       <label for="OCD">OCD</label><br>
 
-      <input type="checkbox" name="DDD" value="DDD">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="DDD">
       <label for="DDD">DDD</label><br>
 
       <label for="ChildEnrollmentDate">Child Enrollment Date:</label>
@@ -221,13 +221,13 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="T12">T12:Deceased</option>
       </select><br>
 
-      <label for="DCPPYes">DCPP Involment:</label>
-      <input type="radio" name="DCPPYes" value="DCPPYes">Yes </input>
-      <input type="radio" name="DCPPNo" value="DCPPNo"> No </input><br>
+      <label for="DCPP">DCPP Involvement:</label>
+      <input type="radio" name="DCPP" value="Yes">Yes </input>
+      <input type="radio" name="DCPP" value="No"> No </input><br>
 
-      <label for="DCPPYes">Court Involment:</label>
-      <input type="radio" name="CourtYes" value="CourtYes">Yes </input>
-      <input type="radio" name="CourtPNo" value="CourtNo">No </input><br>
+      <label for="CourtInvolvement">Court Involvement:</label>
+      <input type="radio" name="CourtInvolvement" value="Yes">Yes </input>
+      <input type="radio" name="CourtInvolvement" value="No">No </input><br>
       <input type="submit" name="register"/>
     </form>
   </body>
@@ -240,31 +240,61 @@ ini_set('display_errors', 1);
 if($_POST){
 	//var_dump($_POST);
 	//var_dump($_POST["firstName"]);
-
+	
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
+		
+		if( $_POST['CyberNumber'] != NULL){
+			
+			if ($_POST["ChildsDiagnosis"]){
+			$child_str = implode (", ", $_POST["ChildsDiagnosis"]);
+			}
+		
+			else{
+				$child_str = NULL;
+			}
+			$stmt = $db->prepare("INSERT INTO `family`
+                        VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
+								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
+								:primarylanguage, :otherlanguage, :childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
+								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement)");
+								
+		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
+						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
+						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
+						":maritalstatus"=> $_POST["maritalStatus"], ":homephone"=> $_POST["homePhone"], ":referred"=> $_POST["referedby"],
+						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
+						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],":cybernumber"=> $_POST["CyberNumber"],":childlevelcare"=> $_POST["childsLevelofCare"],
+						":childplacement"=> $_POST["ChildsPlacement"],":childDiagnosis"=> $child_str,":childenrollmentedate"=> $_POST["ChildEnrollmentDate"],
+						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"]);
+		}
+		else {
+		
 		 $stmt = $db->prepare("INSERT INTO `family`
                         VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
 								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
 								:primarylanguage, :otherlanguage, :childrenreceivingservices)");
+								
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
 						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
 						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
 						":maritalstatus"=> $_POST["maritalStatus"], ":homephone"=> $_POST["homePhone"], ":referred"=> $_POST["referedby"],
 						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
 						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"]);
-		//var_dump($params)
+		}
+		#var_dump($_POST);
 		$stmt->execute($params);
-		$id = $db->lastInsertId();
+		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		$id = intval($db->lastInsertId());
 		
-		$stmt = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, DEFAULT, :caremanager, :dyfscontact, :id)");
+		$stmt1 = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, :casenumber, :caremanager, :dyfscontact, :id, DEFAULT)");
 		
-		$params = array(":programstartdate"=> $_POST["ProgramStartDate"],":caremanager"=> $_POST["careManager"], 
+		$params1 = array(":programstartdate"=> $_POST["ProgramStartDate"],":casenumber"=> $_POST["caseNumber"],":caremanager"=> $_POST["careManager"], 
 						":dyfscontact"=> $_POST["DYFSContact"], ":id"=> $id);
-		$stmt->execute($params);
+		$stmt1->execute($params1);
 		
-		//var_dump($id);
-        //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		#var_dump($id);
+        #echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
         }
         catch(Exception $e){
                 echo $e->getMessage();
