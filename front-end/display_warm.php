@@ -1,3 +1,14 @@
+<html lang="en" dir="ltr">
+	<head>
+		<title>display_warm</title>
+		<button style= "float:right;"type="button" onclick="location.href = 'Logout.php';"
+					name="Login"> Logout
+		</button>
+		<button style= "float:right;"type="button" onclick="location.href = 'home.html';"
+					name="Login"> Home
+		</button>
+	</head>
+</html>
 <?php
 
 		error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
@@ -8,7 +19,7 @@
 	   echo "<br>";
 	   echo "<table border='1'>";
        try{
-		   
+
 			$q = $db->prepare("DESCRIBE warmline");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -18,8 +29,8 @@
 			foreach ($table_fields as $col_name) {
 				echo "<td>" .$col_name."</td>";
 				}
-				
-			
+
+
 			 $stmt = $db->query('SELECT * FROM warmline')->fetchall(PDO::FETCH_ASSOC);
 			 #$stmt->execute();
 			 #$sql = "SELECT * from family";
@@ -27,13 +38,13 @@
 				#var_dump($row['fid']);
 				 echo "<tr>";
 				 #echo "<td>$row[1]</td>";
-				 
+
 				  foreach ($row as $value){
 				#	  var_dump($value);
 						 echo "<td>" . $value . "</td>";
 				  }
-	
-				  
+
+
 				  echo "</tr>";
 			   }
 		    }

@@ -1,3 +1,14 @@
+<html lang="en" dir="ltr">
+	<head>
+		<title>display_intake</title>
+		<button style= "float:right;"type="button" onclick="location.href = 'Logout.php';"
+					name="Login"> Logout
+		</button>
+		<button style= "float:right;"type="button" onclick="location.href = 'home.html';"
+					name="Login"> Home
+		</button>
+	</head>
+</html>
 <?php
 
 		error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
@@ -8,7 +19,7 @@
 	   echo "<br>";
 	   echo "<table border='1'>";
        try{
-		   
+
 			$q = $db->prepare("DESCRIBE family");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -18,12 +29,12 @@
 			foreach ($table_fields as $col_name) {
 				echo "<td>" .$col_name."</td>";
 				}
-				
+
 				echo "<td> Case Number </td>";
 				echo "<td> Program start date </td>";
 				echo "<td> Care manager </td>";
 				echo "<td> DYFScontact </td>";
-			
+
 			 $stmt = $db->query('SELECT * FROM family')->fetchall(PDO::FETCH_ASSOC);
 			 #$stmt->execute();
 			 #$sql = "SELECT * from family";
@@ -31,12 +42,12 @@
 				#var_dump($row['fid']);
 				 echo "<tr>";
 				 #echo "<td>$row[1]</td>";
-				 
+
 				  foreach ($row as $value){
 				#	  var_dump($value);
 						 echo "<td>" . $value . "</td>";
 				  }
-				  
+
 				  $stmt1 = $db->prepare('SELECT casenumber,programstartdate,caremanager,dyfscontact FROM cases where fid = ?');
 				  $stmt1->execute([$row['fid']]);
 				  $data = $stmt1->fetchAll(PDO::FETCH_ASSOC);
@@ -46,7 +57,7 @@
 					  #var_dump($value1);
 						 echo "<td>" . $value1 . "</td>";
 				  }
-				  
+
 				  echo "</tr>";
 			   }
 		    }
