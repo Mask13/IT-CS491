@@ -1,3 +1,10 @@
+<?php
+session_start();
+require ("config.php");
+if(!isset($_SESSION['UID'])){
+  header("Location: index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
