@@ -28,22 +28,22 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	$pass = $_POST['password'];
 	$username = $_POST['username'];
 	//$pass = password_hash($pass, PASSWORD_BCRYPT);
-	
+
     $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 	$db = new PDO($connection_string, $dbuser, $dbpass);
-	
+
 	Try{
 		 $stmt = $db->prepare("SELECT username, password, id from `users` where username = :username LIMIT 1");
 		 $params = array(":username"=> $username);
          $stmt->execute($params);
 		 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 	}
-	
+
 	catch(Exception $e){
 		echo $e->getMessage();
 		exit();
 	}
-	
+
 	//var_dump($result);
 	//finally{}
 	if($result){
@@ -51,21 +51,21 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		 if(password_verify($pass, $userpassword)){
             //$_SESSION['IsAdmin'] = $result['IsAdmin'];
             $_SESSION['ID'] = $result['id'];
-			echo "<script> ; window.location.href='home.html'; </script>";
+			echo "<script> ; window.location.href='home.php'; </script>";
 			 //echo'<html><script type="text/javascript">window.open("register.php","_self");</script></html>';
 			 //header("Location: register.php");
 		 }
-		 
+
 		 else{
 			 echo "something wrong mate";
 		 }
 	}
-	
+
 	else{
 			 echo "something wrong ";
 		 }
-	
-	
+
+
 }
 
 

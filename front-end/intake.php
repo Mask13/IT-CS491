@@ -40,7 +40,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
     <button style= "float:right;"type="button" onclick="location.href = 'logout.php';"
           name="Login"> Logout
     </button>
-    <button style= "float:right;"type="button" onclick="location.href = 'home.html';"
+    <button style= "float:right;"type="button" onclick="location.href = 'home.php';"
           name="Login"> Home
     </button>
   </head>
