@@ -1,7 +1,7 @@
 <?php
 session_start();
 require ("config.php");
-if(!isset($_SESSION['UID'])){
+if(!isset($_SESSION['ID'])){
   header("Location: index.php");
 }
 ?>
