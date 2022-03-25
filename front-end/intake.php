@@ -7,6 +7,34 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 <!DOCTYPE html>
 <html>
+  <style media="screen">
+    .button {
+      padding: 7px 14px;
+      text-align: center;
+      display: inline-block;
+
+      font-size: 16px;
+    }
+    .form1 br{
+      margin-bottom: 1em;
+      display:inline-block;
+    }
+    .form1 input{
+      margin:5px;
+    }
+    .form1 select{
+      margin:5px;
+    }
+    .form1 font{
+      font-size: 30px;
+    }
+    font2{
+      font-size: 17px;
+      display: inline-block;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  </style>
   <head>
     <title>Register</title>
     <button style= "float:right;"type="button" onclick="location.href = 'logout.php';"
@@ -233,23 +261,23 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
   </body>
 </html>
 
-<?php 
+<?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display_errors', 1);
 
 if($_POST){
 	//var_dump($_POST);
 	//var_dump($_POST["firstName"]);
-	
+
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
-		
+
 		if( $_POST['CyberNumber'] != NULL){
-			
+
 			if ($_POST["ChildsDiagnosis"]){
 			$child_str = implode (", ", $_POST["ChildsDiagnosis"]);
 			}
-		
+
 			else{
 				$child_str = NULL;
 			}
@@ -258,7 +286,7 @@ if($_POST){
 								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
 								:primarylanguage, :otherlanguage, :childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
 								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement)");
-								
+
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
 						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
 						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
@@ -269,12 +297,12 @@ if($_POST){
 						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"]);
 		}
 		else {
-		
+
 		 $stmt = $db->prepare("INSERT INTO `family`
                         VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
 								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
 								:primarylanguage, :otherlanguage, :childrenreceivingservices)");
-								
+
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
 						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
 						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
@@ -286,13 +314,13 @@ if($_POST){
 		$stmt->execute($params);
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		$id = intval($db->lastInsertId());
-		
+
 		$stmt1 = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, :casenumber, :caremanager, :dyfscontact, :id, DEFAULT)");
-		
-		$params1 = array(":programstartdate"=> $_POST["ProgramStartDate"],":casenumber"=> $_POST["caseNumber"],":caremanager"=> $_POST["careManager"], 
+
+		$params1 = array(":programstartdate"=> $_POST["ProgramStartDate"],":casenumber"=> $_POST["caseNumber"],":caremanager"=> $_POST["careManager"],
 						":dyfscontact"=> $_POST["DYFSContact"], ":id"=> $id);
 		$stmt1->execute($params1);
-		
+
 		#var_dump($id);
         #echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
         }

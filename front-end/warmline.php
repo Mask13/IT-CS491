@@ -6,7 +6,8 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html>
   <head>
     <meta charset="utf-8">
     <title>Outreach</title>
@@ -18,8 +19,29 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
           name="Login"> Home
     </button>
   </head>
+  <style media="screen">
+    .button {
+      padding: 7px 14px;
+      text-align: center;
+      display: inline-block;
+      font-size: 16px;
+    }
+    .form1 br{
+      margin-bottom: 1em;
+      display:inline-block;
+    }
+    .form1 input{
+      margin:5px;
+    }
+    .form1 select{
+      margin:5px;
+    }
+    .form1 font{
+      font-size: 30px;
+    }
+  </style>
   <body>
-    <form name="Warmlines" id="Warmlines" method="POST">
+    <form class="form1" name="Warmlines" id="Warmlines" method="POST">
       <font size="5"> Warmlines:</font><br>
       <label for="contactLocation">Contact Location:</label>
       <select name="contactLocation">
@@ -47,7 +69,6 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="WL Research/Collateral Call">WL Research/Collateral Call</option>
         <option value="Youth Event">Youth Event</option>
       </select><br>
-      <br>
       <label for="SupportLevel">Support Level:</label>
       <select name="SupportLevel">
         <option value="Low Level of Support">Low Level of Support</option>
@@ -188,13 +209,13 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
       <label for="TimeSpentWarm">Time Spent - Warmline Contact</label>
       <input type="number" name="TimeSpentWarm"> Minutes</input><br>
-	   <input type="submit" name="register"/>
+	   <input class="button" type="submit" name="register"/>
     </form>
   </body>
 </html>
 
 <?php
-	
+
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display_errors', 1);
 
@@ -204,36 +225,36 @@ if($_POST){
 
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
-		$stmt = $db->prepare("INSERT INTO `warmline` 
-							VALUES (:contactLocation, :supportlevel, :typeofcaller, :callerreferedby, :reasonforcall, :resources, :timespentsupport, 
+		$stmt = $db->prepare("INSERT INTO `warmline`
+							VALUES (:contactLocation, :supportlevel, :typeofcaller, :callerreferedby, :reasonforcall, :resources, :timespentsupport,
 									:notes, :warmcontact, :timespentwarm, DEFAULT)");
-									
+
 		if ($_POST["Reason"]){
 			$reason_str = implode (", ", $_POST["Reason"]);
 		}
-		
+
 		else{
 			$reason_str = NULL;
 		}
-		
+
 		if ($_POST["Resources"]){
 			$resources_str = implode (", ", $_POST["Resources"]);
 		}
-		
+
 		else{
 			$resources_str = NULL;
 		}
-		
-		
+
+
 		$params = array(":contactLocation"=> $_POST["contactLocation"],":supportlevel"=> $_POST["SupportLevel"], ":timespentsupport"=> $_POST["TimeSpentSupport"],
 						":typeofcaller"=> $_POST["TypeOfCaller"], ":callerreferedby"=> $_POST["CallerRefered"], ":reasonforcall"=> $reason_str,
 						":resources"=> $resources_str, ":notes"=> $_POST["Notes"], ":warmcontact"=> $_POST["WarmlineContact"], ":timespentwarm"=> $_POST["TimeSpentWarm"]);
 		$stmt->execute($params);
-		
-		//$id = $db->lastInsertId();
-		
 
-		
+		//$id = $db->lastInsertId();
+
+
+
 		//var_dump($id);
         //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
         }

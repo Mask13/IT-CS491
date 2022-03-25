@@ -1,5 +1,33 @@
 <!DOCTYPE html>
 <html>
+  <style media="screen">
+    .button {
+      padding: 7px 14px;
+      text-align: center;
+      display: inline-block;
+
+      font-size: 16px;
+    }
+    .form1 br{
+      margin-bottom: 1em;
+      display:inline-block;
+    }
+    .form1 input{
+      margin:5px;
+    }
+    .form1 select{
+      margin:5px;
+    }
+    .form1 font{
+      font-size: 30px;
+    }
+    font2{
+      font-size: 17px;
+      display: inline-block;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  </style>
   <head>
     <title>Register</title>
     <button style= "float:right;"type="button" onclick="location.href = 'Logout.php';"
@@ -10,11 +38,14 @@
     </button>
   </head>
   <body>
-    <form name="Intake" id="Intake" method="POST">
-      <font size="5"> Program Enrollmnet:</font><br>
+    <form class ="form1" name="Intake" id="Intake" method="POST">
+
+      <font> Program Enrollmnet:</font><br>
       <label for="ProgramStartDate">Program Start Date:</label>
       <input type="date" name="ProgramStartDate"><br>
-      <font size="5"> Add New Participant:</font><br>
+
+
+      <font> Add New Participant:</font><br>
       <label for="caseNumber">Case Number: </label>
       <input id="caseNumber" name="caseNumber" placeholder="Case Number"/><br>
       <label for="prefix">Prefix:</label>
@@ -110,7 +141,9 @@
         <option value="CallingOnBehalfOfParent">Calling On Behalf Of Parent</option>
         <option value="Other">Other</option>
       </select><br>
-      <font size="5"> Demographic Information: </font><br>
+
+
+      <font> Demographic Information: </font><br>
       <label for="PriamryLanguage">Primary Language:</label>
       <select name="PriamryLanguage">
         <option value="English">English</option>
@@ -123,6 +156,8 @@
       <input name = "OtherLanguage"/><br>
       <label for="ChildrenReceivingServices">Children Receiving Services:</label>
       <input type="text" name = "ChildrenReceivingServices"/><br>
+
+
       <font size="5"> Only Answer This Section On CMO Child's Record:</font><br>
       <label for="CyberNumber">Cyber Number:</label>
       <input type="text" name = "CyberNumber"/><br>
@@ -151,7 +186,7 @@
         <option value="Other">Other</option>
       </select><br>
 
-      <font size="3"> Childs Diagnosis: </font><br>
+      <font2> Childs Diagnosis: </font2> <br>
 
       <input type="checkbox" name="ImpulseControl" value="ImpulseControl">
       <label for="ImpulseControl">ImpulseControl</label><br>
@@ -221,7 +256,7 @@
       <label for="DCPPYes">Court Involment:</label>
       <input type="radio" name="CourtYes" value="CourtYes">Yes </input>
       <input type="radio" name="CourtPNo" value="CourtNo">No </input><br>
-      <input type="submit" name="register"/>
+      <input class="button" type="submit" name="register"/>
     </form>
   </body>
 </html>
