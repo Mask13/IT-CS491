@@ -51,7 +51,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <input type="date" name="ProgramStartDate"><br>
       <font size="5"> Add New Participant:</font><br>
       <label for="caseNumber">Case Number: </label>
-      <input id="caseNumber" name="caseNumber" placeholder="Case Number"/><br>
+      <input id="caseNumber" name="caseNumber" placeholder="Case Number" required/><br>
       <label for="prefix">Prefix:</label>
       <select name="prefix">
         <option value="Mr.">Mr.</option>
@@ -65,11 +65,11 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="Rabbi">Rabbi</option>
       </select><br>
       <label for="firstName">First Name: </label>
-      <input id="firstName" name="firstName" placeholder="First Name"/><br>
+      <input id="firstName" name="firstName" placeholder="First Name" required/><br>
       <label for="middleName">Middle Name: </label>
       <input id="middleName" name="middleName" placeholder="Middle Name"/><br>
       <label for="lastName">Last Name: </label>
-      <input id="lastName" name="lastName" placeholder="Last Name"/><br>
+      <input id="lastName" name="lastName" placeholder="Last Name" required/><br>
       <label for="Address1">Address 1: </label>
       <input id="Address1" name="Address1" placeholder="Address 1"/><br>
       <label for="Address2">Address 2: </label>
@@ -79,7 +79,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="email">Email: </label>
       <input id="email" name="email" placeholder="Email"/><br>
       <label for="DOB">Date of Birth:</label>
-      <input type="date" id="DOB" name="DOB"><br>
+      <input type="date" id="DOB" name="DOB" required><br>
       <label for="Gender">Gender:</label>
       <select name="Gender">
         <option value="Male">Male</option>
