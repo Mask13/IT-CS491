@@ -1,6 +1,10 @@
 <?php
 require("config.php");
 session_start();
+
+if(isset($_SESSION['ID'])){
+  header("Location: home.php");
+}
  ?>
 
 <html lang="en" dir="ltr">

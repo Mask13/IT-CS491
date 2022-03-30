@@ -48,7 +48,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
     <form name="Intake" id="Intake" method="POST">
       <font size="5"> Program Enrollmnet:</font><br>
       <label for="ProgramStartDate">Program Start Date:</label>
-      <input type="date" name="ProgramStartDate"><br>
+      <input type="date" name="ProgramStartDate"> required<br>
       <font size="5"> Add New Participant:</font><br>
       <label for="caseNumber">Case Number: </label>
       <input id="caseNumber" name="caseNumber" placeholder="Case Number" required/><br>
@@ -285,7 +285,7 @@ if($_POST){
                         VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
 								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
 								:primarylanguage, :otherlanguage, :childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
-								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement)");
+								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement, :uid)");
 
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
 						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
@@ -294,25 +294,30 @@ if($_POST){
 						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
 						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],":cybernumber"=> $_POST["CyberNumber"],":childlevelcare"=> $_POST["childsLevelofCare"],
 						":childplacement"=> $_POST["ChildsPlacement"],":childDiagnosis"=> $child_str,":childenrollmentedate"=> $_POST["ChildEnrollmentDate"],
-						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"]);
+						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"], ":uid"=>intval($_SESSION["ID"]) );
 		}
+		
 		else {
 
 		 $stmt = $db->prepare("INSERT INTO `family`
                         VALUES (:firstname, :lastname, :prefix, :middlename, DEFAULT, :address1, :address2, :zip,
 								:email,:dob,:gender,:race,:maritalstatus, :homephone,:referred,:familymemberrole,
-								:primarylanguage, :otherlanguage, :childrenreceivingservices)");
+								:primarylanguage, :otherlanguage, :childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
+								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement, :uid)");
 
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
 						":middlename"=> $_POST["middleName"],":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"],
 						":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], ":gender"=> $_POST["Gender"], ":race"=> $_POST["race"],
 						":maritalstatus"=> $_POST["maritalStatus"], ":homephone"=> $_POST["homePhone"], ":referred"=> $_POST["referedby"],
 						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
-						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"]);
+						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],  ":cybernumber"=> NULL,":childlevelcare"=> NULL,
+						":childplacement"=> NULL,":childDiagnosis"=> NULL,":childenrollmentedate"=> NULL, ":cmodischargedate"=> NULL,":cmostatus"=> NULL,":dcppinvolvement"=> NULL,":courtinvolvement"=> NULL, ":uid"=>intval($_SESSION["ID"]));
 		}
-		#var_dump($_POST);
+		
+		
+		var_dump($params);
 		$stmt->execute($params);
-		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		$id = intval($db->lastInsertId());
 
 		$stmt1 = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, :casenumber, :caremanager, :dyfscontact, :id, DEFAULT)");
@@ -320,6 +325,8 @@ if($_POST){
 		$params1 = array(":programstartdate"=> $_POST["ProgramStartDate"],":casenumber"=> $_POST["caseNumber"],":caremanager"=> $_POST["careManager"],
 						":dyfscontact"=> $_POST["DYFSContact"], ":id"=> $id);
 		$stmt1->execute($params1);
+		
+		
 
 		#var_dump($id);
         #echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
