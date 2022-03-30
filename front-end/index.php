@@ -39,12 +39,29 @@ if(isset($_SESSION['ID'])){
              background-color: #497288;
              filter: blur(18px);
            }
+           .navbar {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 20px;
+              background-color: #F0EAD6;
+              color: #fff;
+              border-radius: 10px;
+              border-style:outset;
+              border-color: #ffc107;
+           }
            form{
              text-align: center;
              position: absolute;
              left: 50%;
              top: 50%;
              transform: translate(-50%,-50%);
+           }
+           .logo {
+             font-size: 72px;
+             color: #004060;
+             background-color: #F0EAD6;
+             width: 100%;
            }
        body{
             background-image: url("https://lh3.googleusercontent.com/_uLtK2p65lwRVcqkAa-jenk95kdYIGr9-tHHh3rJnHLXsWzjHf6mgEOZFqykyFr7XtLSVsk_aBjOmS-ZMb8=s1600");
@@ -103,9 +120,9 @@ if(isset($_SESSION['ID'])){
              display: inline-block;
            }
          }
-
   </style>
   <body>
+    <center class="navbar"><font class="logo"> NJFSO </font></center>
     <div id= container>
       <font size="9">
       <center><form name="loginform" id="myForm" method="POST">
@@ -117,6 +134,7 @@ if(isset($_SESSION['ID'])){
     </div>
   </body>
  </html>
+
 
 <?php
 
