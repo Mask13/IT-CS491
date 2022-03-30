@@ -203,8 +203,8 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="WarmlineContact">Warmline Contact:</label>
       <select name="WarmlineContact">
         <option value="Low Level of Support">Low Level of Support</option>
-        <option value="Moderate Level of Support">Low Level of Support</option>
-        <option value="High Level of Support">Low Level of Support</option>
+        <option value="Moderate Level of Support">Moderate Level of Support</option>
+        <option value="High Level of Support">High Level of Support</option>
       </select><br>
 
       <label for="TimeSpentWarm">Time Spent - Warmline Contact</label>
@@ -220,7 +220,6 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 ini_set('display_errors', 1);
 
 if($_POST){
-	var_dump($_POST);
 	//var_dump($_POST["firstName"]);
 
 	try{
