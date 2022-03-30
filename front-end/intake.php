@@ -7,9 +7,41 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 <!DOCTYPE html>
 <html>
+<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
   <style media="screen">
+    .navbar {
+       display: flex;
+       align-items: center;
+       padding: 20px;
+       background-color: #0077B6;
+       color: #fff;
+       position: relative;
+    }
+    /* LOGO */
+    .logo {
+     font-size: 32px;
+    }
+    ul {
+      margin: 0;
+      padding: 5px;
+      list-style-type: none;
+      text-align: center;
+      display: inline;
+    }
+    p {
+      padding-left: 15px;
+    }
     .button {
       padding: 7px 14px;
+      text-align: center;
+      display: inline-block;
+
+      font-size: 16px;
+    }
+    .navbutton {
+      padding: 7px 10px;
       text-align: center;
       display: inline-block;
 
@@ -34,24 +66,40 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       margin-top: 5px;
       margin-bottom: 5px;
     }
+    p{
+      position: absolute;
+      right:5px;
+    }
+    a{
+      position: static;
+      padding-left: 10px;
+    }
   </style>
   <head>
     <title>Register</title>
-    <button style= "float:right;"type="button" onclick="location.href = 'logout.php';"
-          name="Login"> Logout
-    </button>
-    <button style= "float:right;"type="button" onclick="location.href = 'home.php';"
-          name="Login"> Home
-    </button>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <span class="logo">NJAFSO</span>
+      </ul>
+      <p>
+        <button class="btn btn-secondary" type="button" onclick="location.href = 'home.php';" name="Login"> Home </button>
+        <button class="btn btn-secondary" type="button" onclick="location.href = 'Logout.php';" name="Login"> Logout </button>
+      </p>
+    </nav>
+
   </head>
   <body>
-    <form name="Intake" id="Intake" method="POST">
-      <font size="5"> Program Enrollmnet:</font><br>
+    <a>
+    <form class ="form1" name="Intake" id="Intake" method="POST">
+
+      <font> Program Enrollmnet:</font><br>
       <label for="ProgramStartDate">Program Start Date:</label>
-      <input type="date" name="ProgramStartDate"> required<br>
-      <font size="5"> Add New Participant:</font><br>
+      <input type="date" name="ProgramStartDate"><br>
+
+
+      <font> Add New Participant:</font><br>
       <label for="caseNumber">Case Number: </label>
-      <input id="caseNumber" name="caseNumber" placeholder="Case Number" required/><br>
+      <input id="caseNumber" name="caseNumber" placeholder="Case Number"/><br>
       <label for="prefix">Prefix:</label>
       <select name="prefix">
         <option value="Mr.">Mr.</option>
@@ -65,11 +113,11 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="Rabbi">Rabbi</option>
       </select><br>
       <label for="firstName">First Name: </label>
-      <input id="firstName" name="firstName" placeholder="First Name" required/><br>
+      <input id="firstName" name="firstName" placeholder="First Name"/><br>
       <label for="middleName">Middle Name: </label>
       <input id="middleName" name="middleName" placeholder="Middle Name"/><br>
       <label for="lastName">Last Name: </label>
-      <input id="lastName" name="lastName" placeholder="Last Name" required/><br>
+      <input id="lastName" name="lastName" placeholder="Last Name"/><br>
       <label for="Address1">Address 1: </label>
       <input id="Address1" name="Address1" placeholder="Address 1"/><br>
       <label for="Address2">Address 2: </label>
@@ -79,7 +127,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="email">Email: </label>
       <input id="email" name="email" placeholder="Email"/><br>
       <label for="DOB">Date of Birth:</label>
-      <input type="date" id="DOB" name="DOB" required><br>
+      <input type="date" id="DOB" name="DOB"><br>
       <label for="Gender">Gender:</label>
       <select name="Gender">
         <option value="Male">Male</option>
@@ -107,7 +155,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="Common Law">Common Law</option>
       </select><br>
       <label for="homePhone">Home Phone:</label>
-      <input type="tel" id="homePhone" name="homePhone"><br>
+      <input type="tel" id="homePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="homePhone"><br>
       <label for="careManager">Care Manager:</label>
       <select name="careManager">
         <option value="Single">Sample</option>
@@ -145,7 +193,9 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="CallingOnBehalfOfParent">Calling On Behalf Of Parent</option>
         <option value="Other">Other</option>
       </select><br>
-      <font size="5"> Demographic Information: </font><br>
+
+
+      <font> Demographic Information: </font><br>
       <label for="PriamryLanguage">Primary Language:</label>
       <select name="PriamryLanguage">
         <option value="English">English</option>
@@ -158,6 +208,8 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <input name = "OtherLanguage"/><br>
       <label for="ChildrenReceivingServices">Children Receiving Services:</label>
       <input type="text" name = "ChildrenReceivingServices"/><br>
+
+
       <font size="5"> Only Answer This Section On CMO Child's Record:</font><br>
       <label for="CyberNumber">Cyber Number:</label>
       <input type="text" name = "CyberNumber"/><br>
@@ -186,45 +238,45 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="Other">Other</option>
       </select><br>
 
-      <font size="3"> Childs Diagnosis: </font><br>
+      <font2> Childs Diagnosis: </font2> <br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="ImpulseControl">
+      <input type="checkbox" name="ImpulseControl" value="ImpulseControl">
       <label for="ImpulseControl">ImpulseControl</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="AdjustmentDisorder">
+      <input type="checkbox" name="AdjustmentDisorder" value="AdjustmentDisorder">
       <label for="AdjustmentDisorder">Adjustment Disorder</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="AttentionDeficient">
+      <input type="checkbox" name="AttentionDeficient" value="AttentionDeficient">
       <label for="AttentionDeficient">Attention Deficient</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="Schizophrenia">
+      <input type="checkbox" name="Schizophrenia" value="Schizophrenia">
       <label for="Schizophrenia">Schizophrenia</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="MoodDisorder">
+      <input type="checkbox" name="MoodDisorder" value="MoodDisorder">
       <label for="MoodDisorder">Mood Disorder</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="PervasiveDev">
+      <input type="checkbox" name="PervasiveDev" value="PervasiveDev">
       <label for="PervasiveDev">Pervasive Development Disorder</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="AnxientyDisorder">
+      <input type="checkbox" name="AnxientyDisorder" value="AnxientyDisorder">
       <label for="AnxientyDisorder">Anxienty Disorder</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="SubstanceRelated">
+      <input type="checkbox" name="SubstanceRelated" value="SubstanceRelated">
       <label for="SubstanceRelated">Substance Related</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherDisorder">
+      <input type="checkbox" name="OtherDisorder" value="OtherDisorder">
       <label for="OtherDisorder">Other Disorder</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherCondition">
+      <input type="checkbox" name="OtherCondition" value="OtherCondition">
       <label for="OtherCondition">Other Condition</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="BiPolar">
+      <input type="checkbox" name="BiPolar" value="BiPolar">
       <label for="BiPolar">Bi Polar</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="OCD">
+      <input type="checkbox" name="OCD" value="OCD">
       <label for="OCD">OCD</label><br>
 
-      <input type="checkbox" name="ChildsDiagnosis[]" value="DDD">
+      <input type="checkbox" name="DDD" value="DDD">
       <label for="DDD">DDD</label><br>
 
       <label for="ChildEnrollmentDate">Child Enrollment Date:</label>
@@ -249,15 +301,15 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
         <option value="T12">T12:Deceased</option>
       </select><br>
 
-      <label for="DCPP">DCPP Involvement:</label>
-      <input type="radio" name="DCPP" value="Yes">Yes </input>
-      <input type="radio" name="DCPP" value="No"> No </input><br>
+      <label for="DCPPYes">DCPP Involment:</label>
+      <input type="radio" name="DCPPYes" value="DCPPYes">Yes </input>
+      <input type="radio" name="DCPPNo" value="DCPPNo"> No </input><br>
 
-      <label for="CourtInvolvement">Court Involvement:</label>
-      <input type="radio" name="CourtInvolvement" value="Yes">Yes </input>
-      <input type="radio" name="CourtInvolvement" value="No">No </input><br>
-      <input type="submit" name="register"/>
-    </form>
+      <label for="DCPPYes">Court Involment:</label>
+      <input type="radio" name="CourtYes" value="CourtYes">Yes </input>
+      <input type="radio" name="CourtPNo" value="CourtNo">No </input><br>
+      <input class="button" type="submit" name="register"/>
+    </form></a>
   </body>
 </html>
 
@@ -296,7 +348,7 @@ if($_POST){
 						":childplacement"=> $_POST["ChildsPlacement"],":childDiagnosis"=> $child_str,":childenrollmentedate"=> $_POST["ChildEnrollmentDate"],
 						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"], ":uid"=>intval($_SESSION["ID"]) );
 		}
-		
+
 		else {
 
 		 $stmt = $db->prepare("INSERT INTO `family`
@@ -313,11 +365,8 @@ if($_POST){
 						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],  ":cybernumber"=> NULL,":childlevelcare"=> NULL,
 						":childplacement"=> NULL,":childDiagnosis"=> NULL,":childenrollmentedate"=> NULL, ":cmodischargedate"=> NULL,":cmostatus"=> NULL,":dcppinvolvement"=> NULL,":courtinvolvement"=> NULL, ":uid"=>intval($_SESSION["ID"]));
 		}
-		
-		
-		var_dump($params);
 		$stmt->execute($params);
-		echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		$id = intval($db->lastInsertId());
 
 		$stmt1 = $db->prepare("INSERT INTO `cases` VALUES (:programstartdate, :casenumber, :caremanager, :dyfscontact, :id, DEFAULT)");
@@ -325,8 +374,8 @@ if($_POST){
 		$params1 = array(":programstartdate"=> $_POST["ProgramStartDate"],":casenumber"=> $_POST["caseNumber"],":caremanager"=> $_POST["careManager"],
 						":dyfscontact"=> $_POST["DYFSContact"], ":id"=> $id);
 		$stmt1->execute($params1);
-		
-		
+
+
 
 		#var_dump($id);
         #echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
