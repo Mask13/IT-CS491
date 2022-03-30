@@ -7,21 +7,116 @@ if(isset($_SESSION['ID'])){
 }
  ?>
 
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Login</title>
-  </head>
+ <html lang="en" dir="ltr">
+   <head>
+     <meta charset="utf-8">
+     <title>Login</title>
+   </head>
+   <style>
+       #container{
+             width: 350px;
+             height: 450px;
+             background: inherit;
+             position: absolute;
+             overflow: hidden;
+             top: 50%;
+             left: 50%;
+             margin-left: -175px;
+             margin-top: -250px;
+             border-radius: 8px;
+           }
+       #container:before{
+             width: 400px;
+             height: 550px;
+             content: "";
+             position: absolute;
+             top: -25px;
+             left: -25px;
+             bottom: 0;
+             right: 0;
+             background: inherit;
+             box-shadow: inset 0 0 0 200px rgba(255,255,255,0.2);
+             background-color: #497288;
+             filter: blur(18px);
+           }
+           form{
+             text-align: center;
+             position: absolute;
+             left: 50%;
+             top: 50%;
+             transform: translate(-50%,-50%);
+           }
+       body{
+            background-image: url("https://lh3.googleusercontent.com/_uLtK2p65lwRVcqkAa-jenk95kdYIGr9-tHHh3rJnHLXsWzjHf6mgEOZFqykyFr7XtLSVsk_aBjOmS-ZMb8=s1600");
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #bcbdbe;
+            }
+           .button {
+             background-color: #0077B6;
+             border: 3px outset #ffc107;
+             color: white;
+             padding: 15px 19px;
+             text-align: center;
+             text-decoration: none;
+             display: inline-block;
+             font-size: 16px;
+             font-family: Sans-serif;
+             position: relative; top:0px;
+
+             background-repeat:no-repeat;
+             background-position:bottom left;
+             background-position:bottom left, top right, 0 0, 0 0;
+             background-clip:border-box;
+
+             -moz-border-radius:8px;
+             -webkit-border-radius:8px;
+             border-radius:8px;
+
+             -moz-box-shadow:0 0 1px #fff inset;
+             -webkit-box-shadow:0 0 1px #fff inset;
+             box-shadow:0 0 1px #fff inset;
+           }
+
+           .formInput1{
+             width: 100%;
+             padding: 10px;
+             border: 2px solid #ffc107;
+             border-radius: 25px;
+             box-sizing: border-box;
+             resize: vertical;
+             position: relative; bottom:50px;
+           }
+           .formInput2{
+             width: 100%;
+             padding: 10px;
+             border: 2px solid #ffc107;
+             border-radius: 25px;
+             box-sizing: border-box;
+             resize: vertical;
+             position: relative; bottom:40px;
+           }
+           .label {
+             padding: 12px 12px 12px 0;
+             display: inline-block;
+           }
+         }
+
+  </style>
   <body>
-    <font size="9">
-        <center><form name="loginform" id="myForm" method="POST">
-            <center style="font-family:Avant Garde;" > Login:</center>
-    			  <input type="username" id="username" name="username" placeholder="Enter Username"/><br>
-    			  <input type="password" id="pass" name="password" placeholder="Enter Password"/><br>
-          <input class= "button" type="submit" value="Login"/>
-    		</form></center><font>
+    <div id= container>
+      <font size="9">
+      <center><form name="loginform" id="myForm" method="POST">
+          <center style="position: relative; bottom: 80px; font-family:Avant Garde; color:white" > Login:</center>
+          <input class = "formInput1" type="username" id="username" name="username" placeholder="Enter Username"/><br>
+          <input class = "formInput2" type="password" id="pass" name="password" placeholder="Enter Password"/><br>
+        <input class= "button" type="submit" value="Login"/>
+      </form></center>
+    </div>
   </body>
-</html>
+ </html>
 
 <?php
 
