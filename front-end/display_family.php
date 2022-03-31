@@ -19,7 +19,7 @@
 		$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data = $stmt->fetchAll();
-
+		
 		$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data1 = $stmt->fetchAll();
