@@ -1,0 +1,65 @@
+<?php
+	require("config.php");
+	session_start();
+	
+	if(!(isset($_SESSION['role']))){
+  header("Location: index.php");
+}
+	if(!($_SESSION['role']>=0)){
+	header("Location: index.php");
+}
+
+	$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+	$db= new PDO($connection_string, $dbuser, $dbpass);
+	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE); 
+	
+	
+	echo "<br>";
+	echo "<table border='1'>";
+	echo "<td> Meeting ID </td>";
+	echo "<td> FSO </td>";
+	echo "<td> Who attended the meeting </td>";
+	echo "<td> Type of Meeting </td>";
+	echo "<td> Contact Location </td>";
+	echo "<td> Time Spent </td>";
+	echo "<td> Notes </td>";
+	
+	$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:uid');
+	$stmt->execute(['uid' => intval($_SESSION["ID"])]);
+	$data2 = $stmt->fetchAll();
+	
+	
+	
+	$stmt = $db->prepare('SELECT name, fso_id FROM FSO WHERE fso_id=:id');
+	$stmt->execute(['id' => intval($data2[0]["fso_id"])]);
+	$data2 = $stmt->fetchAll();
+	
+	
+	
+	
+	try{
+		$stmt = $db->prepare('SELECT * FROM fso_meeting where id_fso=:fs_id');
+		$stmt->execute(['fs_id' => intval($data2[0]["fso_id"])]);
+		$data = $stmt->fetchAll();
+		
+		#var_dump($data);
+		
+		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		#'id' => intval($_SESSION["ID"])]
+		foreach ($data as $row){
+			echo "<tr>";
+			echo "<td>" . $row["meeting_id"] . "</td>";
+			echo "<td>" . $data2[0]["name"] . "</td>";
+			echo "<td>" . $row["meeting_person"] . "</td>";
+			echo "<td>" . $row["meeting_type"] . "</td>";
+			echo "<td>" . $row["contact_location"] . "</td>";
+			echo "<td>" . $row["time_spent"] . "</td>";
+			echo "<td>" . $row["meeting_notes"] . "</td>";
+		}
+	}
+	
+	catch(Exception $e){
+			echo $e->getMessage();
+			exit();
+		}
+?>
