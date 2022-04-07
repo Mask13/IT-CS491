@@ -1,10 +1,9 @@
 <?php
 require("config.php");
 session_start();
-
  ?>
 
- <html lang="en" dir="ltr">
+<html lang="en" dir="ltr">
    <head>
      <meta charset="utf-8">
      <title>Login</title>
@@ -19,7 +18,7 @@ session_start();
              top: 50%;
              left: 50%;
              margin-left: -175px;
-             margin-top: -250px;
+             margin-top: -150px;
              border-radius: 8px;
            }
        #container:before{
@@ -132,7 +131,6 @@ session_start();
   </body>
  </html>
 
-
 <?php
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
@@ -147,7 +145,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	$db = new PDO($connection_string, $dbuser, $dbpass);
 
 	Try{
-		 $stmt = $db->prepare("SELECT username, password, id from `users` where username = :username LIMIT 1");
+		 $stmt = $db->prepare("SELECT username, password, id, role from `users` where username = :username LIMIT 1");
 		 $params = array(":username"=> $username);
          $stmt->execute($params);
 		 $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -163,23 +161,21 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	if($result){
 		$userpassword = $result['password'];
 		 if(password_verify($pass, $userpassword)){
-            //$_SESSION['IsAdmin'] = $result['IsAdmin'];
+            $_SESSION['role'] = $result['role'];
             $_SESSION['ID'] = $result['id'];
 			echo "<script> ; window.location.href='home.php'; </script>";
 			 //echo'<html><script type="text/javascript">window.open("register.php","_self");</script></html>';
 			 //header("Location: register.php");
 		 }
-
-		 else{
-			 echo "something wrong mate";
-		 }
+     else{
+       $message = "Username and/or Password incorrect.\\nTry again.";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+     }
 	}
-
-	else{
-			 echo "something wrong ";
-		 }
-
-
+  else{
+    $message = "Username and/or Password incorrect.\\nTry again.";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+  }
 }
 
 
