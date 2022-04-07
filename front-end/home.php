@@ -1,9 +1,13 @@
 <?php
 session_start();
 require ("config.php");
-if(!isset($_SESSION['ID'])){
+	if(!(isset($_SESSION['role']))){
   header("Location: index.php");
 }
+	if(!($_SESSION['role']>=0)){
+	header("Location: index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
