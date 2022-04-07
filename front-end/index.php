@@ -177,6 +177,4 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
 }
-
-
 ?>
