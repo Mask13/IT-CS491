@@ -11,6 +11,14 @@
 </html>
 <?php
 
+	if(!(isset($_SESSION['role']))){
+  header("Location: index.php");
+}
+	if(!($_SESSION['role']>=0)){
+	header("Location: index.php");
+}
+
+
 		error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 		ini_set('display_errors', 1);
        require "config.php";
