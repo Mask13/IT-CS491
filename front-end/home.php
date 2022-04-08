@@ -59,6 +59,11 @@ if(!($_SESSION['role']>=0)){
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+        <a class="nav-link" href="home.php"style ="color: black;">Home</a>
+
+      </li>
 
       <li class="nav-item">
 
@@ -66,17 +71,25 @@ if(!($_SESSION['role']>=0)){
 
       </li>
 
-      <li class="nav-item active">
+      <li class="nav-item dropdown">
 
-        <a class="nav-link" href="outreach.html"style ="color: black;">Community Outreach</a>
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
+		Community Outreach
+		</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
+          <a class="dropdown-item" href="out-Meet.php">FSO-Meeting and Training Attendance</a>
+          <a class="dropdown-item" href="InitMeet.php">Assigned FSO Meetings</a>
+          <a class="dropdown-item" href="Satisfaction-Survey.php">Family Satisfaction Survey</a>
+
+        </div>
       </li>
 
 
 
       <li class="nav-item dropdown">
 
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
 
           Family Support
 
@@ -86,15 +99,37 @@ if(!($_SESSION['role']>=0)){
 
           <a class="dropdown-item" href="intake.php">Participant Enrollment</a>
 
-          
+
 
           <a class="dropdown-item" href="InitMeet.php">Assigned FSO Meetings</a>
 
-          
+
 
           <a class="dropdown-item" href="Satisfaction-Survey.php">Family Satisfaction Survey</a>
 
 
+
+        </div>
+
+      </li>
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
+
+          Display
+
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+          <a class="dropdown-item" href="display_intake.php">Intake Display</a>
+
+          <a class="dropdown-item" href="display_satisfaction.php">Display Satisfaction</a>
+
+          <a class="dropdown-item" href="display_meet.php">Display Meet</a>
+
+          <a class="dropdown-item" href="display_warm.php">Display Warmline</a>
 
         </div>
 
@@ -116,11 +151,11 @@ if(!($_SESSION['role']>=0)){
 
 </html>
 
-<?php 
-echo "Assigned Families:";
+<?php
+echo "Assigned Families: \n \n";
 $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 $db= new PDO($connection_string, $dbuser, $dbpass);
-	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE); 
+	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
 
 	echo "<br>";
 	echo "<table border='1'>";
@@ -129,13 +164,13 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 	echo "<td> Last Name </td>";
 	echo "<td> Case Number </td>";
 	echo "<td> Assigned Employee </td>";
-	
+
 	try{
-		
+
 		$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data = $stmt->fetchAll();
-		
+
 		$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data1 = $stmt->fetchAll();
@@ -144,7 +179,7 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 			$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
 			$stmt->execute(['id' => intval($row["fid"])]);
 			$data2 = $stmt->fetchAll();
-			
+
 			echo "<td>" . $row["fid"] . "</td>";
 			echo "<td>" . $row["firstname"] . "</td>";
 			echo "<td>" . $row["lastname"] . "</td>";
@@ -153,7 +188,7 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 		}
 
 	}
-	
+
 	catch(Exception $e){
 			echo $e->getMessage();
 			exit();
