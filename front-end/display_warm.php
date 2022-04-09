@@ -1,12 +1,6 @@
 <html lang="en" dir="ltr">
 	<head>
 		<title>display_warm</title>
-		<button style= "float:right;"type="button" onclick="location.href = 'Logout.php';"
-					name="Login"> Logout
-		</button>
-		<button style= "float:right;"type="button" onclick="location.href = 'home.php';"
-					name="Login"> Home
-		</button>
 	</head>
   <?php
       include_once('navbar.php');
