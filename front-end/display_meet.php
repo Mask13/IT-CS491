@@ -1,7 +1,5 @@
 <?php
-      include_once('navbar.php');
-  ?>
-<?php
+	include_once('navbar.php');
 	require("config.php");
 	session_start();
 
@@ -32,22 +30,22 @@
 	$data2 = $stmt->fetchAll();
 
 
-
 	$stmt = $db->prepare('SELECT name, fso_id FROM FSO WHERE fso_id=:id');
 	$stmt->execute(['id' => intval($data2[0]["fso_id"])]);
 	$data2 = $stmt->fetchAll();
 
-
-
+	
 
 	try{
 		$stmt = $db->prepare('SELECT * FROM fso_meeting where id_fso=:fs_id');
 		$stmt->execute(['fs_id' => intval($data2[0]["fso_id"])]);
 		$data = $stmt->fetchAll();
+		
+		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 
 		#var_dump($data);
 
-		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		#
 		#'id' => intval($_SESSION["ID"])]
 		foreach ($data as $row){
 			echo "<tr>";

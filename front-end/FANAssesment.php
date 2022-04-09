@@ -1,3 +1,25 @@
+<?php 
+
+require("config.php");
+session_start();
+
+	if(!(isset($_SESSION['role']))){
+  header("Location: index.php");
+}
+	if(!($_SESSION['role']>=0)){
+	header("Location: index.php");
+}
+
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+
+$db= new PDO($connection_string, $dbuser, $dbpass);
+$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
+$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
+$stmt->execute(['id' => intval($_SESSION["ID"])]);
+$data = $stmt->fetchAll();
+
+?>
+
 <html lang="en" dir="ltr">
   <style media="screen">
     purple{
@@ -23,6 +45,15 @@
   <body>
     <div class="col">
     <form class="form1" name="mainForm" method="post">
+	
+	<label>Select the Family.</label>
+	  <br>
+      <select name="family" required>
+        <option value=""  disabled selected>Select an Option</option>
+		<?php foreach ($data as $row) { ?>
+		<option value= <?php echo $row["fid"]; ?> ><?php echo $row["firstname"]; echo " "; echo $row["lastname"]; echo " "; echo $row["fid"];}?> </option>
+      </select><br><br><br><br>
+	  
       <purple>
         The mission of the Family Support Organization is to provide families with Support, Education and Advocacy.
         Completion of this questionnaire serves as the basis for your ongoing action plan.
@@ -50,6 +81,8 @@
       regarding issues related to the development and well-being of our youth.
       <br>
       (3) <purple>There is only one caregiver</purple><br><br>
+	  
+	  
 
       <select name="CaregiverCollab" required>
         <option disabled selected>Select an option</option>
@@ -108,7 +141,7 @@
         <option value="2">2</option>
         <option value="3">3</option>
       </select><br><br>
-      <b>ACTION PLAN</b> - FAMILY COMMUNICATION - with score of 2 or 3<br>
+      <b>ACTION PLAN</b> - CAREGIVER FAMILY AND SOCIAL RESOURCES - with score of 2 or 3<br>
       <textarea form="mainForm" name="APFamilySocial" rows="5" cols="80"></textarea>
       <br><br>
 
@@ -158,7 +191,7 @@
         <option value="2">2</option>
         <option value="3">3</option>
       </select><br><br>
-      <b>ACTION PLAN</b> - FAMILY SAFETY - with score of 2 or 3<br>
+      <b>ACTION PLAN</b> - CAREGIVER OPTIMISM - with score of 2 or 3<br>
       <textarea form="mainForm" name="APCareOpt" rows="5" cols="80"></textarea>
       <br><br>
 
@@ -412,7 +445,7 @@
         <option value="3">3</option>
       </select><br><br>
       <b>ACTION PLAN</b> - ABILITY TO COMMUNICATE - with score of 2 or 3<br>
-      <textarea form="mainForm" name="APAbilityComm" rows="5" cols="80"></textarea>
+      <textarea form="mainForm" name="APAbilityComm" rows="5" cols="80">NULL</textarea>
       <br><br>
 
       <b>ABILITY TO ADVOCATE:</b> This item refers to your ability to advocate for yourself, your youth, and your family with
@@ -480,9 +513,57 @@
       <input type="date" name="CreateDate" required/><br>
       <label for="SubmitDate">Assessment Submitted Date:<purple>*</purple></label><br>
       <input type="date" name="SubmitDate" required/><br><br>
-      <input type="file" id="myFile" name="filename"><br><br>
       <input type="submit">
     </form>
     </div>
   </body>
 </html>
+
+<?php 
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+	
+	if($_POST){
+		$q = $db->prepare("DESCRIBE fans");
+		$q->execute();
+		$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+		$wat = $_POST['family'];
+		unset($_POST['family']);
+		$_POST['family'] = $wat;
+		#array_push($_POST, );
+		array_pop($table_fields);
+		
+		$sql = 'INSERT INTO fans ( %s ) VALUES ( %s)';
+		
+		$fieldsClause = implode( ', ', $table_fields );
+		
+		$valuesClause = implode( ', ', array_map( function( $value ) { return ':' . $value; }, $table_fields ) );
+		
+		$sql = sprintf( $sql, $fieldsClause, $valuesClause );
+		
+		var_dump($sql);
+		echo "<br>";
+		echo "<br>";
+		echo "<br>";
+		var_dump($_POST);
+
+		try{
+			
+			$stmt = $db->prepare($sql);
+			$stmt->execute($_POST);
+			echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+			#$sql = sprintf( $sql, $fieldsClause, $valuesClause );
+
+			#$params = array(,":fid"=> $_POST["family"]);
+
+			#$stmt->execute($params);
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		}
+
+		catch(Exception $e){
+				echo $e->getMessage();
+				exit();
+		}
+	}
+?>

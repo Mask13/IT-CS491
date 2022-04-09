@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <header>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-family: sans-serif; font-size: 120%; background-color: #36096d; background-image: linear-gradient(315deg, #36096d 0%, #37d5d6 74%);">
 
@@ -58,7 +60,7 @@
 
           <a class="dropdown-item" href="InitMeet.php">Assigned FSO Meetings</a>
 
-          <a class="dropdown-item" href="FansAssesment.php">FANS Assesment</a>
+          <a class="dropdown-item" href="FANAssesment.php">FANS Assesment</a>
 
           <a class="dropdown-item" href="Satisfaction-Survey.php">Family Satisfaction Survey</a>
 
