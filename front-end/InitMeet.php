@@ -19,8 +19,19 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 <html>
   <head>
     <title>Meetings attended by FSO</title>
-    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
+  <?php
+      include_once('navbar.php');
+  ?>
   <body>
     <form class ="form1" name="Intake" id="Intake" method="POST">
       <label for="MeetingPersons">Who attended the meeting?:</label>
@@ -86,24 +97,24 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 
 <?php
 	if($_POST){
-		
+
 		$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
 		$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data1 = $stmt->fetch();
-		
-		#var_dump($data1);
-		
+
+		var_dump($data1);
+
 		try{
 			$stmt = $db->prepare("INSERT INTO `fso_meeting`
                         VALUES (:meeting_person, :meeting_type,:contact_location,:time_spent,:meeting_notes,DEFAULT,:fso_id)");
 			$params = array(":meeting_person"=> $_POST["MeetingPersons"],":meeting_type"=> $_POST["TypeofMeeting"], ":contact_location"=> $_POST["ContactLocation"],
 							":time_spent"=> $_POST["TimeSpent"],":meeting_notes"=> $_POST["Notes2"], ":fso_id"=> $data1['fso_id']);
-			
+
 			$stmt->execute($params);
-			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+			echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		}
-		
+
 		catch(Exception $e){
                 echo $e->getMessage();
                 exit();
