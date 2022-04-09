@@ -58,7 +58,7 @@
 
           <a class="dropdown-item" href="InitMeet.php">Assigned FSO Meetings</a>
 
-
+          <a class="dropdown-item" href="FansAssesment.php">FANS Assesment</a>
 
           <a class="dropdown-item" href="Satisfaction-Survey.php">Family Satisfaction Survey</a>
 
