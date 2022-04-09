@@ -8,6 +8,9 @@
 					name="Login"> Home
 		</button>
 	</head>
+  <?php
+      include_once('navbar.php');
+  ?>
 </html>
 <?php
 
