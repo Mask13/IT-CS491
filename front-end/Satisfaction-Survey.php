@@ -169,7 +169,8 @@ $data = $stmt->fetchAll();
                         VALUES (DEFAULT, :prompt,:court,:inform,:knowledge,:advocacy,:goals,:qol,:recommend,:fid)");
 			$params = array(":prompt"=> $_POST["prompt"],":court"=> $_POST["curteous"], ":inform"=> $_POST["informed"],":knowledge"=> $_POST["answerQuestions"],":advocacy"=> $_POST["advocacySkills"],
 							":goals"=> $_POST["progress"],":qol"=> $_POST["qualityOfLife"],":recommend"=> $_POST["recommend"], ":fid"=> $_POST["family"]);
-
+			
+			#var_dump($stmt);
 			$stmt->execute($params);
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		}
