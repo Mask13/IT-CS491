@@ -42,7 +42,7 @@ if(!($_SESSION['role']>=0)){
 <body>
     <form class="col" name="meeting" id="meeting" method="POST">
       <label for="TypeofMeeting/Tr">Type of Meeting/Training:</label>
-      <select name="Type of Meeting2">
+      <select name="Type of Meeting2" required>
       <option value="FSO group supervision meeting">FSO Group Supervision Meeting</option>
       <option value="CMO training/community activity">CMO training/community activity</option>
       <option value="General Strategy/Policy/Procedure meeting">JDAI</option>
@@ -56,7 +56,7 @@ if(!($_SESSION['role']>=0)){
       </select>
       <br>
       <label for="Meeting/Training Location">Meeting/Training Location</label>
-      <select name="Meeting/Training Location">
+      <select name="Meeting/Training Location" required>
       <option value="Community">Community</option>
       <option value="Court">Court</option>
       <option value="Detention">Detention</option>
@@ -68,6 +68,14 @@ if(!($_SESSION['role']>=0)){
       <br>
       <br>
       </select>
+      <br>
+      <label for="NumOfAttend">Number of people in attendance:</label>
+      <br>
+      <input type="number" name="NumOfAttend" required/>
+      <br>
+      <label for="notes">Notes:</label>
+      <br>
+      <textarea form="meeting" name="notes" rows="5" cols="80"></textarea>
       <br>
       <input class="button" type="submit" name="submit"/>
     </form>
