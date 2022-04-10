@@ -110,9 +110,9 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
                         VALUES (:meeting_person, :meeting_type,:contact_location,:time_spent,:meeting_notes,DEFAULT,:fso_id)");
 			$params = array(":meeting_person"=> $_POST["MeetingPersons"],":meeting_type"=> $_POST["TypeofMeeting"], ":contact_location"=> $_POST["ContactLocation"],
 							":time_spent"=> $_POST["TimeSpent"],":meeting_notes"=> $_POST["Notes2"], ":fso_id"=> $data1['fso_id']);
-
+			
 			$stmt->execute($params);
-			echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		}
 
 		catch(Exception $e){

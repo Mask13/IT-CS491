@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 require("config.php");
 session_start();
@@ -44,8 +44,8 @@ $data = $stmt->fetchAll();
   ?>
   <body>
     <div class="col">
-    <form class="form1" name="mainForm" id="mainForm" method="post">
-
+    <form class="form1" name="mainForm" id="mainForm" method="post" enctype="multipart/form-data">
+	
 	<label>Select the Family.</label>
 	  <br>
       <select name="family" required>
@@ -53,7 +53,7 @@ $data = $stmt->fetchAll();
 		<?php foreach ($data as $row) { ?>
 		<option value= <?php echo $row["fid"]; ?> ><?php echo $row["firstname"]; echo " "; echo $row["lastname"]; echo " "; echo $row["fid"];}?> </option>
       </select><br><br><br><br>
-
+	  
       <purple>
         The mission of the Family Support Organization is to provide families with Support, Education and Advocacy.
         Completion of this questionnaire serves as the basis for your ongoing action plan.
@@ -81,8 +81,8 @@ $data = $stmt->fetchAll();
       regarding issues related to the development and well-being of our youth.
       <br>
       (3) <purple>There is only one caregiver</purple><br><br>
-
-
+	  
+	  
 
       <select name="CaregiverCollab" required>
         <option disabled selected>Select an option</option>
@@ -513,51 +513,93 @@ $data = $stmt->fetchAll();
       <input type="date" name="CreateDate" required/><br>
       <label for="SubmitDate">Assessment Submitted Date:<purple>*</purple></label><br>
       <input type="date" name="SubmitDate" required/><br><br>
+	  <input type="file" id="myFile" name="filename"/><br><br>
       <input type="submit">
     </form>
     </div>
   </body>
 </html>
 
-<?php
+<?php 
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display_errors', 1);
-
-
+	
 	if($_POST){
+		
 		$q = $db->prepare("DESCRIBE fans");
 		$q->execute();
 		$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+		
 		$wat = $_POST['family'];
 		unset($_POST['family']);
-		$_POST['family'] = $wat;
+		#$_POST['family'] = $wat;
+		
+		#$wat1 = $table_fields['f_id'];
+		#unset($table_fields['f_id']);
+		#$table_fields['fid'] = $wat1;
+		
 		#array_push($_POST, );
 		array_pop($table_fields);
-
-		$sql = 'INSERT INTO fans ( %s ) VALUES ( %s)';
-
-		$fieldsClause = implode( ', ', $table_fields );
-
+		$table_fields[39] = 'fid';
+		
+		
+		
+		$sql = 'INSERT INTO fans VALUES ( %s, DEFAULT)';
+		
 		$valuesClause = implode( ', ', array_map( function( $value ) { return ':' . $value; }, $table_fields ) );
-
-		$sql = sprintf( $sql, $fieldsClause, $valuesClause );
-
-		var_dump($sql);
-		echo "<br>";
-		echo "<br>";
-		echo "<br>";
-		var_dump($_POST);
+		
+		$sql = sprintf( $sql, $valuesClause );
+		
+		var_dump($_FILES);
+		
+		#var_dump($table_fields);
+		$counter = 0;
+		$params = [];
+		foreach ($_POST as $place => $other){
+			$temp = ":";
+			$temp .= $table_fields[$counter];
+			$params[$temp] = $other;
+			#echo $temp;
+			$counter++;
+		}
+		
+		$temp = ':';
+		$temp .= "fid";
+		$params[$temp] = $wat;
+		if(!empty($_FILES["filename"]["name"])){
+			$filename = $_FILES['filename']['name'];
+			$temp = explode(".", $_FILES["filename"]["name"]);
+			$newfilename = round(microtime(true)) . '.' . end($temp);
+			$destination = 'uploads/' . $filename;
+			$file = $_FILES['filename']['tmp_name'];
+			
+			if ($_FILES['filename']['size'] > 500000) { // file shouldn't be larger than 500KB
+				echo "File too large!"; 
+			}
+			
+			elseif (move_uploaded_file($file, $destination . $newfilename)) {
+				#echo ($destination . $newfilename);
+				$stmt1 = $db->prepare("INSERT INTO `file_info` VALUES (?,?,?,DEFAULT)");
+				$stmt1->execute([$filename, $newfilename, $destination . $newfilename]);
+				#echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
+				$params[':fan_file_id'] = intval($db->lastInsertId());
+			}
+		}
+		
+		else{
+			$params[':fan_file_id'] = NULL;
+		}
+		#
+		
+		#var_dump($params);
+		#var_dump($_POST);
 
 		try{
-
+			
 			$stmt = $db->prepare($sql);
-			$stmt->execute($_POST);
-			echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-			#$sql = sprintf( $sql, $fieldsClause, $valuesClause );
-
-			#$params = array(,":fid"=> $_POST["family"]);
-
-			#$stmt->execute($params);
+			
+			$stmt->execute($params);
+			
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		}
 
@@ -566,4 +608,5 @@ ini_set('display_errors', 1);
 				exit();
 		}
 	}
+	
 ?>
