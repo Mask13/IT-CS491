@@ -498,8 +498,6 @@ $data = $stmt->fetchAll();
       <textarea form="mainForm" name="APAbilityPart" rows="5" cols="80"></textarea>
       <br><br>
 
-      FANS SCORE: (PHP here to calculate)
-      <br>
       <label for="NextFANDue">FAMILY LEVEL OF SERVICE:<purple>*</purple></label><br>
       <select name="FamService" required>
         <option disabled selected>Select an option</option>
@@ -515,9 +513,37 @@ $data = $stmt->fetchAll();
       <input type="date" name="SubmitDate" required/><br><br>
       <input type="submit">
     </form>
+    <script>
+    function CalcTotalScore() {
+      var formEl = document.forms.mainForm;
+      var formData = new FormData(formEl);
+      var AbilityPart = parseInt(formData.get('AbilityPart')=== null ? 0 : formData.get('AbilityPart'));
+      var AbilityAdv = parseInt(formData.get('AbilityAdv')=== null ? 0 : formData.get('AbilityAdv'));
+      var AbilityComm = parseInt(formData.get('AbilityComm')=== null ? 0 : formData.get('AbilityComm'));
+      var KnowRight = parseInt(formData.get('KnowRight')=== null ? 0 : formData.get('KnowRight'));
+      var KnowCommu = parseInt(formData.get('KnowCommu')=== null ? 0 : formData.get('KnowCommu'));
+      var KnowCSOC = parseInt(formData.get('KnowCSOC')=== null ? 0 : formData.get('KnowCSOC'));
+      var CareEff = parseInt(formData.get('CareEff')=== null ? 0 : formData.get('CareEff'));
+      var CareStress = parseInt(formData.get('CareStress')=== null ? 0 : formData.get('CareStress'));
+      var CareSelfCare = parseInt(formData.get('CareSelfCare')=== null ? 0 : formData.get('CareSelfCare'));
+      var CareOrg = parseInt(formData.get('CareOrg')=== null ? 0 : formData.get('CareOrg'));
+      var spirit = parseInt(formData.get('spirit')=== null ? 0 : formData.get('spirit'));
+      var CareOpt = parseInt(formData.get('CareOpt')=== null ? 0 : formData.get('CareOpt'));
+      var FamilySafty = parseInt(formData.get('FamilySafty')=== null ? 0 : formData.get('FamilySafty'));
+      var FamilySocial = parseInt(formData.get('FamilySocial')=== null ? 0 : formData.get('FamilySocial'));
+      var FamilyComm = parseInt(formData.get('FamilyComm')=== null ? 0 : formData.get('FamilyComm'));
+      var CaregiverCollab = parseInt(formData.get('CaregiverCollab')=== null ? 0 : formData.get('CaregiverCollab'));
+      var totalScore = AbilityPart+AbilityAdv+AbilityComm+KnowRight+KnowCommu+KnowCSOC+CareEff+CareStress+CareSelfCare+CareOrg+spirit+CareOpt+FamilySafty+FamilySocial+FamilyComm+CaregiverCollab;
+      document.getElementById("totalScoreText").innerHTML = totalScore;
+    }
+    </script>
+    Total Score:
+    <p id="totalScoreText"></p><br>
+    <button onclick="CalcTotalScore()">Calculate Function</button>
     </div>
   </body>
 </html>
+
 
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
