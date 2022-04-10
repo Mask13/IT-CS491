@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require("config.php");
 session_start();
@@ -44,8 +44,8 @@ $data = $stmt->fetchAll();
   ?>
   <body>
     <div class="col">
-    <form class="form1" name="mainForm" method="post">
-	
+    <form class="form1" name="mainForm" id="mainForm" method="post">
+
 	<label>Select the Family.</label>
 	  <br>
       <select name="family" required>
@@ -53,7 +53,7 @@ $data = $stmt->fetchAll();
 		<?php foreach ($data as $row) { ?>
 		<option value= <?php echo $row["fid"]; ?> ><?php echo $row["firstname"]; echo " "; echo $row["lastname"]; echo " "; echo $row["fid"];}?> </option>
       </select><br><br><br><br>
-	  
+
       <purple>
         The mission of the Family Support Organization is to provide families with Support, Education and Advocacy.
         Completion of this questionnaire serves as the basis for your ongoing action plan.
@@ -81,8 +81,8 @@ $data = $stmt->fetchAll();
       regarding issues related to the development and well-being of our youth.
       <br>
       (3) <purple>There is only one caregiver</purple><br><br>
-	  
-	  
+
+
 
       <select name="CaregiverCollab" required>
         <option disabled selected>Select an option</option>
@@ -519,11 +519,11 @@ $data = $stmt->fetchAll();
   </body>
 </html>
 
-<?php 
+<?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display_errors', 1);
 
-	
+
 	if($_POST){
 		$q = $db->prepare("DESCRIBE fans");
 		$q->execute();
@@ -533,15 +533,15 @@ ini_set('display_errors', 1);
 		$_POST['family'] = $wat;
 		#array_push($_POST, );
 		array_pop($table_fields);
-		
+
 		$sql = 'INSERT INTO fans ( %s ) VALUES ( %s)';
-		
+
 		$fieldsClause = implode( ', ', $table_fields );
-		
+
 		$valuesClause = implode( ', ', array_map( function( $value ) { return ':' . $value; }, $table_fields ) );
-		
+
 		$sql = sprintf( $sql, $fieldsClause, $valuesClause );
-		
+
 		var_dump($sql);
 		echo "<br>";
 		echo "<br>";
@@ -549,7 +549,7 @@ ini_set('display_errors', 1);
 		var_dump($_POST);
 
 		try{
-			
+
 			$stmt = $db->prepare($sql);
 			$stmt->execute($_POST);
 			echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
