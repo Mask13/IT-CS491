@@ -216,43 +216,32 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
       <font2> Childs Diagnosis: </font2> <br>
 
-      <input type="checkbox" name="ImpulseControl" value="ImpulseControl">
+ 
+      <input type="checkbox" name="ChildsDiagnosis[]" value="ImpulseControl">
       <label for="ImpulseControl">ImpulseControl</label><br>
-
-      <input type="checkbox" name="AdjustmentDisorder" value="AdjustmentDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AdjustmentDisorder">
       <label for="AdjustmentDisorder">Adjustment Disorder</label><br>
-
-      <input type="checkbox" name="AttentionDeficient" value="AttentionDeficient">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AttentionDeficient">
       <label for="AttentionDeficient">Attention Deficient</label><br>
-
-      <input type="checkbox" name="Schizophrenia" value="Schizophrenia">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="Schizophrenia">
       <label for="Schizophrenia">Schizophrenia</label><br>
-
-      <input type="checkbox" name="MoodDisorder" value="MoodDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="MoodDisorder">
       <label for="MoodDisorder">Mood Disorder</label><br>
-
-      <input type="checkbox" name="PervasiveDev" value="PervasiveDev">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="PervasiveDev">
       <label for="PervasiveDev">Pervasive Development Disorder</label><br>
-
-      <input type="checkbox" name="AnxientyDisorder" value="AnxientyDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="AnxientyDisorder">
       <label for="AnxientyDisorder">Anxienty Disorder</label><br>
-
-      <input type="checkbox" name="SubstanceRelated" value="SubstanceRelated">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="SubstanceRelated">
       <label for="SubstanceRelated">Substance Related</label><br>
-
-      <input type="checkbox" name="OtherDisorder" value="OtherDisorder">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherDisorder">
       <label for="OtherDisorder">Other Disorder</label><br>
-
-      <input type="checkbox" name="OtherCondition" value="OtherCondition">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OtherCondition">
       <label for="OtherCondition">Other Condition</label><br>
-
-      <input type="checkbox" name="BiPolar" value="BiPolar">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="BiPolar">
       <label for="BiPolar">Bi Polar</label><br>
-
-      <input type="checkbox" name="OCD" value="OCD">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="OCD">
       <label for="OCD">OCD</label><br>
-
-      <input type="checkbox" name="DDD" value="DDD">
+      <input type="checkbox" name="ChildsDiagnosis[]" value="DDD">
       <label for="DDD">DDD</label><br>
 
       <label for="ChildEnrollmentDate">Child Enrollment Date:</label>

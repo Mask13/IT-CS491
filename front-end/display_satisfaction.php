@@ -14,7 +14,6 @@
 
 	$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 	$db= new PDO($connection_string, $dbuser, $dbpass);
-	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
 
 	echo "<br>";
 	echo "<table border='1'>";
@@ -32,31 +31,39 @@
 	echo "<td> I would recommend the FSO services to other families </td>";
 
 		try{
+			
+			$stmt = $db->prepare('SELECT fid,firstname,lastname FROM family WHERE uid=:u_id');
 
-			$stmt = $db->prepare('SELECT * FROM survey');
-			$stmt->execute();
+			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+
 			$data = $stmt->fetchAll();
 
-			foreach ($data as $row){
-				echo "<tr>";
-				$stmt = $db->prepare('SELECT fid,firstname,lastname FROM family WHERE fid=:id and uid=:u_id');
-				$stmt->execute(['id' => intval($row["f_id"]),'u_id' => intval($_SESSION["ID"])]);
-				$data2 = $stmt->fetchAll();
+			
+
+			foreach ($data as $family_id){
+				
+				$stmt = $db->prepare('SELECT * FROM survey WHERE f_id=:fam_id');
+				$stmt->execute(['fam_id' => $family_id[0]]);
+				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				
+				
 
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+				foreach ($data2 as $row){
+					echo "<tr>";
+					echo "<td>" . $data[0]["fid"] . "</td>";
+					echo "<td>" . $data[0]["firstname"] . "</td>";
+					echo "<td>" . $data[0]["lastname"] . "</td>";
 
-				echo "<td>" . $data2[0]["fid"] . "</td>";
-				echo "<td>" . $data2[0]["firstname"] . "</td>";
-				echo "<td>" . $data2[0]["lastname"] . "</td>";
-
-				echo "<td>" . $row["prompt"] . "</td>";
-				echo "<td>" . $row["court"] . "</td>";
-				echo "<td>" . $row["inform"] . "</td>";
-				echo "<td>" . $row["knowledge"] . "</td>";
-				echo "<td>" . $row["advocacy"] . "</td>";
-				echo "<td>" . $row["goals"] . "</td>";
-				echo "<td>" . $row["qol"] . "</td>";
-				echo "<td>" . $row["recommend"] . "</td>";
+					echo "<td>" . $row["prompt"] . "</td>";
+					echo "<td>" . $row["court"] . "</td>";
+					echo "<td>" . $row["inform"] . "</td>";
+					echo "<td>" . $row["knowledge"] . "</td>";
+					echo "<td>" . $row["advocacy"] . "</td>";
+					echo "<td>" . $row["goals"] . "</td>";
+					echo "<td>" . $row["qol"] . "</td>";
+					echo "<td>" . $row["recommend"] . "</td>";
+				}
 		}
 
 	}

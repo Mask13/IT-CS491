@@ -16,6 +16,9 @@ if(!($_SESSION['role']>=0)){
 
 }
 
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+$db= new PDO($connection_string, $dbuser, $dbpass);
+
 ?>
 
 
@@ -43,7 +46,7 @@ if(!($_SESSION['role']>=0)){
   <body>
     <form class="col" name="CommMeet" id="CommMeet" method="POST">
       <label for="MeetingPersons">Who attended the meeting?:</label>
-      <select name="Who attended the meeting?:">
+      <select name="MeetingPersons">
         <option value="FSO Exceutive Director">FSO Exceutive Director</option>
         <option value="FSP Director">FSP Director</option>
         <option value="Outreach Coordinator">Outreach Coordinator</option>
@@ -52,7 +55,7 @@ if(!($_SESSION['role']>=0)){
         <br>
       </select>
       <label for="TypeofMeeting">Type of Meeting:</label>
-      <select name="Type of Meeting">
+      <select name="TypeofMeeting">
       <option value="CIACC">CIACC</option>
       <option value="Youth Services">Youth Services</option>
       <option value="JDAI">JDAI</option>
@@ -70,7 +73,7 @@ if(!($_SESSION['role']>=0)){
       <br>
       </select>
       <label for= "ContactLocation">Contact Location: </label>
-      <select name = "Contact Location">
+      <select name = "ContactLocation">
       <option value="At a meeting">At a meeting</option>
       <option value="At program site">At program site</option>
       <option value="In the Community">In the Community</option>
@@ -106,3 +109,33 @@ if(!($_SESSION['role']>=0)){
 </form>
 </body>
 </html>
+
+<?php
+	if($_POST){
+
+		$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
+		$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:id');
+		$stmt->execute(['id' => intval($_SESSION["ID"])]);
+		$data1 = $stmt->fetch();
+
+		#var_dump($_POST);
+
+		try{
+			$stmt = $db->prepare("INSERT INTO `comm_meet`
+                        VALUES (DEFAULT,:fso_id, :meeting_person, :meeting_type,:contact_location,:number_people,:time_spent,:meeting_notes)");
+			$params = array(":fso_id"=> $data1['fso_id'],":meeting_person"=> $_POST["MeetingPersons"],":meeting_type"=> $_POST["TypeofMeeting"],":number_people"=> $_POST["numppl"], ":contact_location"=> $_POST["ContactLocation"],
+							":time_spent"=> $_POST["TimeSpent"],":meeting_notes"=> $_POST["Notes2"]);
+			
+			$stmt->execute($params);
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		}
+
+		catch(Exception $e){
+                echo $e->getMessage();
+                exit();
+        }
+	}
+
+
+
+ ?>

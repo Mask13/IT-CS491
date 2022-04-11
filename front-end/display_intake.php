@@ -1,3 +1,7 @@
+<?php
+      include_once('navbar.php');
+  ?>
+
 <html lang="en" dir="ltr">
 	<head>
 		<title>display_intake</title>
@@ -8,9 +12,7 @@
 					name="Login"> Home
 		</button>
 	</head>
-	<?php
-      include_once('navbar.php');
-  ?>
+
 </html>
 <?php
 
@@ -27,6 +29,7 @@
        require "config.php";
        $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
        $db= new PDO($connection_string, $dbuser, $dbpass);
+	   
 	   echo "<br>";
 	   echo "<table border='1'>";
        try{
@@ -46,10 +49,14 @@
 				echo "<td> Care manager </td>";
 				echo "<td> DYFScontact </td>";
 
-			 $stmt = $db->query('SELECT * FROM family')->fetchall(PDO::FETCH_ASSOC);
+			 $stmt = $db->prepare('SELECT * FROM family WHERE uid=:u_id');
+
+			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			 #$stmt->execute();
 			 #$sql = "SELECT * from family";
-			 foreach ($stmt as $row) {
+			 foreach ($data as $row) {
 				#var_dump($row['fid']);
 				 echo "<tr>";
 				 #echo "<td>$row[1]</td>";

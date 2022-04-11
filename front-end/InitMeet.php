@@ -103,7 +103,7 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data1 = $stmt->fetch();
 
-		var_dump($data1);
+		#var_dump($data1);
 
 		try{
 			$stmt = $db->prepare("INSERT INTO `fso_meeting`

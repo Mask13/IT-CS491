@@ -238,7 +238,7 @@ if($_POST){
 		$db = new PDO($connection_string, $dbuser, $dbpass);
 		$stmt = $db->prepare("INSERT INTO `warmline`
 							VALUES (:contactLocation, :supportlevel, :typeofcaller, :callerreferedby, :reasonforcall, :resources, :timespentsupport,
-									:notes, :warmcontact, :timespentwarm, DEFAULT)");
+									:notes, :warmcontact, :timespentwarm, :uid, DEFAULT)");
 
 		if ($_POST["Reason"]){
 			$reason_str = implode (", ", $_POST["Reason"]);
@@ -259,7 +259,7 @@ if($_POST){
 
 		$params = array(":contactLocation"=> $_POST["contactLocation"],":supportlevel"=> $_POST["SupportLevel"], ":timespentsupport"=> $_POST["TimeSpentSupport"],
 						":typeofcaller"=> $_POST["TypeOfCaller"], ":callerreferedby"=> $_POST["CallerRefered"], ":reasonforcall"=> $reason_str,
-						":resources"=> $resources_str, ":notes"=> $_POST["Notes"], ":warmcontact"=> $_POST["WarmlineContact"], ":timespentwarm"=> $_POST["TimeSpentWarm"]);
+						":resources"=> $resources_str, ":notes"=> $_POST["Notes"], ":warmcontact"=> $_POST["WarmlineContact"], ":timespentwarm"=> $_POST["TimeSpentWarm"],":uid"=>intval($_SESSION["ID"]));
 		$stmt->execute($params);
 
 		//$id = $db->lastInsertId();
