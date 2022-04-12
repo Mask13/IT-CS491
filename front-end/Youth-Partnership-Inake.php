@@ -232,6 +232,7 @@
       <label for="Other General Intrests">Other General Interests:</label>
       <textarea form="mainForm" name="Other General Interests" rows="5" cols="80"></textarea>
       <br>
+      <input type="submit">
     </form>
   </div>
   </body>
