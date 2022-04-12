@@ -33,6 +33,7 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
       include_once('navbar.php');
   ?>
   <body>
+		<div class="col">
     <form class ="form1" name="Intake" id="Intake" method="POST">
       <label for="MeetingPersons">Who attended the meeting?:</label>
       <select name="MeetingPersons" required>
@@ -40,59 +41,58 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
         <option value="FSP Director">FSP Director</option>
         <option value="Outreach Coordinator">Outreach Coordinator</option>
         <option value="Youth Coach">Youth Coach</option>
-        <br>
-        <br>
       </select>
+			<br>
       <label for="TypeofMeeting">Type of Meeting:</label>
       <select name="TypeofMeeting" required>
-      <option value="CIACC">CIACC</option>
-      <option value="Youth Services">Youth Services</option>
-      <option value="JDAI">JDAI</option>
-      <option value="Other">Other</option>
-      <option value="Youth Fire Setters">Youth Fire Setters</option>
-      <option value="Reentry Task Force">Reentry Task Force</option>
-      <option value="IDD">IDD</option>
-      <option value="NJAFSO Committee Meetings">NJAFSO Committee Meetings</option>
-      <option value="Education Partnership">Education Partnership</option>
-      <option value="IMPACT">IMPACT</option>
-      <option value="CYCC- County Council for Young Children">CYCC- County Council for Young Children</option>
-      <option value="FSO Executive Director Meeting">FSO Executive Director Meeting</option>
-      <option value="CSOC Statewide Meeting">CSOC Statewide Meeting</option>
-      <br>
-      <br>
+	      <option value="CIACC">CIACC</option>
+	      <option value="Youth Services">Youth Services</option>
+	      <option value="JDAI">JDAI</option>
+	      <option value="Other">Other</option>
+	      <option value="Youth Fire Setters">Youth Fire Setters</option>
+	      <option value="Reentry Task Force">Reentry Task Force</option>
+	      <option value="IDD">IDD</option>
+	      <option value="NJAFSO Committee Meetings">NJAFSO Committee Meetings</option>
+	      <option value="Education Partnership">Education Partnership</option>
+	      <option value="IMPACT">IMPACT</option>
+	      <option value="CYCC- County Council for Young Children">CYCC- County Council for Young Children</option>
+	      <option value="FSO Executive Director Meeting">FSO Executive Director Meeting</option>
+	      <option value="CSOC Statewide Meeting">CSOC Statewide Meeting</option>
       </select>
+			<br>
       <label for= "ContactLocation">Contact Location: </label>
       <select name = "ContactLocation" required>
-      <option value="At a meeting">At a meeting</option>
-      <option value="At program site">At program site</option>
-      <option value="In the Community">In the Community</option>
-      <option value="Courthouse">Courthouse</option>
-      <option value="Detention">Detention</option>
-      <option value="Email/Fax">Email/Fax</option>
-      <option value="FSO-Staff Meeting">FSO-Staff Meeting</option>
-      <option value="Off-site">Off-site</option>
-      <option value="Office">Office</option>
-      <option value="On the phone">On the phone</option>
-      <option value="Other">Other</option>
-      <option value="Probation Office">Probation Office</option>
-      <option value="Research">Research</option>
-      <option value="School">School</option>
-      <option value="Tr-Training">Tr-Training</option>
-      <option value="CIACC">CIACC</option>
-      <option value="Hospital">Hospital</option>
-      <option value="Virutal">Virtual</option>
-      <br>
-      <br>
+	      <option value="At a meeting">At a meeting</option>
+	      <option value="At program site">At program site</option>
+	      <option value="In the Community">In the Community</option>
+	      <option value="Courthouse">Courthouse</option>
+	      <option value="Detention">Detention</option>
+	      <option value="Email/Fax">Email/Fax</option>
+	      <option value="FSO-Staff Meeting">FSO-Staff Meeting</option>
+	      <option value="Off-site">Off-site</option>
+	      <option value="Office">Office</option>
+	      <option value="On the phone">On the phone</option>
+	      <option value="Other">Other</option>
+	      <option value="Probation Office">Probation Office</option>
+	      <option value="Research">Research</option>
+	      <option value="School">School</option>
+	      <option value="Tr-Training">Tr-Training</option>
+	      <option value="CIACC">CIACC</option>
+	      <option value="Hospital">Hospital</option>
+	      <option value="Virutal">Virtual</option>
       </select>
+			<br>
       <label for="TimeSpent">Time Spent:</label>
       <input type="number" name="TimeSpent"/ required><br>
       <br>
       <br>
       <label for="Notes2">Notes:</label>
-      <input type="text" name="Notes2"/><br>
+      <input type="text" name="Notes2"/>
+			<br>
       <input class="button" type="submit" name="submit"/>
-</form>
-</body>
+		</form>
+		</div>
+	</body>
 </html>
 
 <?php
@@ -110,7 +110,7 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
                         VALUES (:meeting_person, :meeting_type,:contact_location,:time_spent,:meeting_notes,DEFAULT,:fso_id)");
 			$params = array(":meeting_person"=> $_POST["MeetingPersons"],":meeting_type"=> $_POST["TypeofMeeting"], ":contact_location"=> $_POST["ContactLocation"],
 							":time_spent"=> $_POST["TimeSpent"],":meeting_notes"=> $_POST["Notes2"], ":fso_id"=> $data1['fso_id']);
-			
+
 			$stmt->execute($params);
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 		}
