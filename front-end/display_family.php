@@ -16,6 +16,8 @@
 	</head>
 </html>
 <?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+		ini_set('display_errors', 1);
 	require("config.php");
 	session_start();
 	
@@ -40,24 +42,35 @@
 	
 	try{
 		
-		$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
-		$stmt->execute(['id' => intval($_SESSION["ID"])]);
+		$stmt = $db->prepare('SELECT fid FROM family WHERE uid=:u_id');
+
+		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+
 		$data = $stmt->fetchAll();
 		
-		$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
-		$stmt->execute(['id' => intval($_SESSION["ID"])]);
-		$data1 = $stmt->fetchAll();
-		foreach ($data as $row){
-			echo "<tr>";
-			$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
-			$stmt->execute(['id' => intval($row["fid"])]);
-			$data2 = $stmt->fetchAll();
+		echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		
+		foreach ($data as $family_id){
+		
+			$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:fam_id');
+			$stmt->execute(['fam_id' => $family_id[0]]);
+			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
-			echo "<td>" . $row["fid"] . "</td>";
-			echo "<td>" . $row["firstname"] . "</td>";
-			echo "<td>" . $row["lastname"] . "</td>";
-			echo "<td>" . $data2[0]["casenumber"] . "</td>";
-			echo "<td>" . $data1[0]["username"] . "</td>";
+			$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
+			$stmt->execute(['id' => intval($_SESSION["ID"])]);
+			$data1 = $stmt->fetchAll();
+			foreach ($data2 as $row){
+				echo "<tr>";
+				$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
+				$stmt->execute(['id' => intval($data[0]["fid"])]);
+				$data3 = $stmt->fetchAll();
+				
+				echo "<td>" . $family_id[0] . "</td>";
+				echo "<td>" . $row["firstname"] . "</td>";
+				echo "<td>" . $row["lastname"] . "</td>";
+				echo "<td>" . $data3[0]["casenumber"] . "</td>";
+				echo "<td>" . $data1[0]["username"] . "</td>";
+				}
 		}
 
 	}

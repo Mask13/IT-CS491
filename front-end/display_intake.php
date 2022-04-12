@@ -35,13 +35,33 @@
 	   echo "<br>";
 	   echo "<table border='1'>";
        try{
+		   
+		   
+		    $q = $db->prepare("DESCRIBE personal_info");
+			$q->execute();
+			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+			array_pop($table_fields);
+			#unset($table_fields['address_id']);
+			foreach ($table_fields as $col_name) {
+				echo "<td>" .$col_name."</td>";
+				}
+				
+			$q = $db->prepare("DESCRIBE address");
+			$q->execute();
+			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+			array_pop($table_fields);
+			array_pop($table_fields);
+			#unset($table_fields['address_id']);
+			foreach ($table_fields as $col_name) {
+				echo "<td>" .$col_name."</td>";
+				}
 
 			$q = $db->prepare("DESCRIBE family");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-		    #$stmt = $db->query('SHOW COLUMNS FROM family')->fetchall(PDO::FETCH_ASSOC);
-			#$sql = "SHOW COLUMNS FROM family";
-			#var_dump($table_fields);
+			array_pop($table_fields);
+			array_pop($table_fields);
+			#array_pop($table_fields);
 			foreach ($table_fields as $col_name) {
 				echo "<td>" .$col_name."</td>";
 				}
@@ -51,34 +71,49 @@
 				echo "<td> Care manager </td>";
 				echo "<td> DYFScontact </td>";
 
-			 $stmt = $db->prepare('SELECT * FROM family WHERE uid=:u_id');
+			$stmt = $db->prepare('SELECT * FROM family WHERE uid=:u_id');
 
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			 #$stmt->execute();
-			 #$sql = "SELECT * from family";
-			 foreach ($data as $row) {
-				#var_dump($row['fid']);
-				 echo "<tr>";
-				 #echo "<td>$row[1]</td>";
-
-				  foreach ($row as $value){
-				#	  var_dump($value);
+			
+			#var_dump($data);
+			
+			$counter = 0;
+			foreach ($data as $row) {
+				$stmt = $db->prepare('SELECT * FROM personal_info WHERE person_id=:pers_id');
+				$stmt->execute(['pers_id' => $row['person_id']]);
+				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				unset($data2[0]['person_id']);
+				echo "<tr>";
+				foreach ($data2[0] as $value){
+						 echo "<td>" . $value . "</td>";
+				  }
+				  
+				$stmt = $db->prepare('SELECT * FROM address WHERE address_id=:address_id');
+				$stmt->execute(['address_id' => $row['address_id']]);
+				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				unset($data2[0]['address_id']);
+				unset($data2[0]['county']);
+				foreach ($data2[0] as $value){
+						 echo "<td>" . $value . "</td>";
+				  } 
+				unset($row['address_id']);
+				unset($row['person_id']);
+				#var_dump($row);
+				foreach ($row as $value){
 						 echo "<td>" . $value . "</td>";
 				  }
 
-				  $stmt1 = $db->prepare('SELECT casenumber,programstartdate,caremanager,dyfscontact FROM cases where fid = ?');
-				  $stmt1->execute([$row['fid']]);
-				  $data = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-				  #var_dump($data);
-				  foreach ($data as $row1){
-					  foreach ($row1 as $value1)
-					  #var_dump($value1);
-						 echo "<td>" . $value1 . "</td>";
-				  }
-
-				  echo "</tr>";
+				$stmt1 = $db->prepare('SELECT casenumber,programstartdate,caremanager,dyfscontact FROM cases where fid = ?');
+				$stmt1->execute([$row['fid']]);
+				$data = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+				foreach ($data as $row1){
+					foreach ($row1 as $value1)
+					echo "<td>" . $value1 . "</td>";
+					}
+				echo "</tr>";
+				$counter++;
 			   }
 		    }
 		catch(Exception $e){

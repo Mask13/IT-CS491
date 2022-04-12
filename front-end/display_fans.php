@@ -2,17 +2,19 @@
       include_once('navbar.php');
   ?>
 
-<html lang="en" dir="ltr">
-	<head>
-		<title>display_Fans</title>
-		<button style= "float:right;"type="button" onclick="location.href = 'Logout.php';"
-					name="Login"> Logout
-		</button>
-		<button style= "float:right;"type="button" onclick="location.href = 'home.php';"
-					name="Login"> Home
-		</button>
-	</head>
+<html>
+	<header>
+	<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	</head>
 </html>
 
 <?php
@@ -35,6 +37,8 @@
 			$q = $db->prepare("DESCRIBE fans");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+			array_pop($table_fields);
+			array_pop($table_fields);
 			foreach ($table_fields as $col_name) {
 				echo "<td>" .$col_name."</td>";
 				}
@@ -54,11 +58,23 @@
 				foreach($data2 as $row){
 					echo "<tr>";
 					#var_dump($row);
+					array_pop($row);
+					array_pop($row);
+					$stmt = $db->prepare('SELECT * FROM file_info WHERE id=:file_id');
+					$stmt->execute(['file_id' => $row['fan_file_id']]);
+					$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					unset($row['fan_file_id']);
 					foreach ($row as $value){
+						
 						
 						echo "<td>" . $value . "</td>";
 				  }
 				  
+				  #var_dump($data3);
+				  echo "<td>";
+				  if ($data3 != NULL){
+				  ?> <html> <a href=<?php echo "/" . $data3[0]['path']; ?> download=<?php echo $data3[0]['original_name'];?>><?php echo $data3[0]['original_name'];?></a> </html>
+				  <?php			}
 				}
 			}
 				

@@ -445,7 +445,7 @@ $data = $stmt->fetchAll();
         <option value="3">3</option>
       </select><br><br>
       <b>ACTION PLAN</b> - ABILITY TO COMMUNICATE - with score of 2 or 3<br>
-      <textarea form="mainForm" name="APAbilityComm" rows="5" cols="80">NULL</textarea>
+      <textarea form="mainForm" name="APAbilityComm" rows="5" cols="80"></textarea>
       <br><br>
 
       <b>ABILITY TO ADVOCATE:</b> This item refers to your ability to advocate for yourself, your youth, and your family with
