@@ -37,6 +37,7 @@
       <br>
       <label for="Notes">Notes:</label><br>
       <textarea form="mainForm" name="Notes" rows="5" cols="80"></textarea>
+      <br><br>
       <input type="submit" value="Submit">
     </form>
   </div>
