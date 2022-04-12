@@ -101,7 +101,7 @@
         <br>
         <input type="checkbox" name="Health[]" value="Taking medications regularly"> Taking medications regularly</input>
         <br>
-        <label for="Other Allergy/Health Concern">Other Allergy/Health Concern:</label>
+        <label for="Other Allergy/Health Concern">Other Allergy/Health Concern:</label><br>
         <textarea form="mainForm" name="Other Allergy/Health Concern" rows="5" cols="80"></textarea>
         <br>
       </div><br>
@@ -179,7 +179,7 @@
       <br>
       <input type="checkbox" name="LifeGoals[]" value="Improve communication skills"> Improve communication skills</input>
       <br>
-      <label for="Other Goals">Other Goals:</label>
+      <label for="Other Goals">Other Goals:</label><br>
       <textarea form="mainForm" name="Other Goals" rows="5" cols="80"></textarea>
       <br><br>
       <b>Future Aspirations:</b>
@@ -205,7 +205,7 @@
       <br>
       <input type="checkbox" name="LearningInterests[]" value="Publishing"> Publishing</input>
       <br>
-      <label for="Other Learning Interests">Other Learning Interests:</label>
+      <label for="Other Learning Interests">Other Learning Interests:</label><br>
       <textarea form="mainForm" name="Other Learning Interests" rows="5" cols="80"></textarea>
       <br>
       <b>General Interests</b><br>
@@ -229,7 +229,7 @@
       <br>
       <input type="checkbox" name="GeneralInterests[]" value="Community Service"> Community Service</input>
       <br>
-      <label for="Other General Intrests">Other General Interests:</label>
+      <label for="Other General Intrests">Other General Interests:</label><br>
       <textarea form="mainForm" name="Other General Interests" rows="5" cols="80"></textarea>
       <br>
       <input type="submit" value="Submit">
