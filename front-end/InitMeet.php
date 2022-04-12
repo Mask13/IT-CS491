@@ -85,9 +85,8 @@ $db= new PDO($connection_string, $dbuser, $dbpass);
       <label for="TimeSpent">Time Spent:</label>
       <input type="number" name="TimeSpent"/ required><br>
       <br>
-      <br>
-      <label for="Notes2">Notes:</label>
-      <input type="text" name="Notes2"/>
+      <label for="Notes2">Notes:</label><br>
+			<textarea form="Intake" name="Notes2" rows="8" cols="80"></textarea>
 			<br>
       <input class="button" type="submit" name="submit"/>
 		</form>
