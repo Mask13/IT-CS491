@@ -26,7 +26,7 @@
       <label for="Date of Meeting">Date of Meeting:</label>
       <input type="date" name="Date of Meeting">
       <br>
-      <label for="Meeting/Event Duration:">Meeting/Event Duration:</label><br>
+      <label for="Meeting/Event Duration">Meeting/Event Duration:</label><br>
       <input type="number" name="Meeting/Event Duration Hour" placeholder="Hours">
       <input type="number" name="Meeting/Event Duration Minutes" placeholder="Minutes"><br><br>
       <label for="Type of Meeting">Type of Meeting:</label>
