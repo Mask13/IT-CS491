@@ -185,17 +185,42 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="ChildrenReceivingServices">Children Receiving Services:</label>
       <input type="text" name = "ChildrenReceivingServices"/><br>
 
-
+			<script type="text/javascript">
+				function CMOSection() {
+					if (document.getElementById('completeCMO').checked) {
+						var b = document.getElementById('CyberNumber');
+						b.setAttribute('required','');
+						var b = document.getElementById('childsLevelofCare');
+						b.setAttribute('required','');
+						var b = document.getElementById('ChildEnrollmentDate');
+						b.setAttribute('required','');
+						var b = document.getElementById('ChildsPlacement');
+						b.setAttribute('required','');
+					}
+					else {
+						var b = document.getElementById('CyberNumber');
+						b.removeAttribute('required');
+						var b = document.getElementById('childsLevelofCare');
+						b.removeAttribute('required');
+						var b = document.getElementById('ChildEnrollmentDate');
+						b.removeAttribute('required');
+						var b = document.getElementById('ChildsPlacement');
+						b.removeAttribute('required');
+					}
+				}
+			</script>
       <font size="5"> Only Answer This Section On CMO Child's Record:</font><br>
-      <label for="CyberNumber">Cyber Number:</label>
-      <input type="text" name = "CyberNumber"/><br>
+			<input type="checkbox" onclick="CMOSection()" id="completeCMO" name="completeCMO">Please check if you will fill out this section<br>
+			<label for="CyberNumber">Cyber Number:</label>
+			<input type="text" id="CyberNumber" name="CyberNumber"/><br>
       <label for="childsLevelofCare">Child Level of Care:</label>
-      <select name="childsLevelofCare">
+      <select id="childsLevelofCare" name="childsLevelofCare">
+        <option disabled selected>Select option</option>
         <option value="CMO">CMO</option>
       </select><br>
 
       <label for="ChildsPlacement">Childs Placement:</label>
-      <select name="ChildsPlacement">
+      <select id="ChildsPlacement" name="ChildsPlacement">
         <option value="Home">Home</option>
         <option value="FosterHome">FosterHome</option>
         <option value="GroupHome">Group Home</option>
@@ -216,7 +241,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
       <font2> Childs Diagnosis: </font2> <br>
 
- 
+
       <input type="checkbox" name="ChildsDiagnosis[]" value="ImpulseControl">
       <label for="ImpulseControl">ImpulseControl</label><br>
       <input type="checkbox" name="ChildsDiagnosis[]" value="AdjustmentDisorder">
@@ -245,7 +270,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="DDD">DDD</label><br>
 
       <label for="ChildEnrollmentDate">Child Enrollment Date:</label>
-      <input type="date" name="ChildEnrollmentDate"/><br>
+      <input type="date" id="ChildEnrollmentDate" name="ChildEnrollmentDate"/><br>
 
       <label for="CMODischargeDate">CMO Discharge Date:</label>
       <input type="date" name="CMODischargeDate"/><br>
@@ -269,7 +294,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="DCPP">DCPP Involvement:</label>
       <input type="radio" name="DCPP" value="Yes">Yes </input>
       <input type="radio" name="DCPP" value="No"> No </input><br>
-	  
+
       <label for="CourtInvolvement">Court Involvement:</label>
       <input type="radio" name="CourtInvolvement" value="Yes">Yes </input>
       <input type="radio" name="CourtInvolvement" value="No">No </input><br>
@@ -288,30 +313,30 @@ if($_POST){
 
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
-		
+
 		$stmt = $db->prepare("INSERT INTO `personal_info`
-                        VALUES (:firstname, :lastname, :prefix, :middlename, :gender, :dob, :race, 
+                        VALUES (:firstname, :lastname, :prefix, :middlename, :gender, :dob, :race,
 						:home_phone,:cell_phone, :email, DEFAULT)");
 
 		$params = array(":firstname"=> $_POST["firstName"],":lastname"=> $_POST["lastName"], ":prefix"=> $_POST["prefix"],
-						":middlename"=> $_POST["middleName"],":email"=> $_POST["email"], ":dob"=> $_POST["DOB"], 
+						":middlename"=> $_POST["middleName"],":email"=> $_POST["email"], ":dob"=> $_POST["DOB"],
 						":gender"=> $_POST["Gender"], ":race"=> $_POST["race"], ":home_phone"=>NULL, ":cell_phone"=>$_POST["homePhone"]);
-						
+
 		$stmt->execute($params);
-						
+
 		$person_id = intval($db->lastInsertId());
-		
+
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-		
+
 		$stmt = $db->prepare("INSERT INTO `address`
                         VALUES (:address1, :address2, :zip, :county, DEFAULT)");
 
 		$params = array(":address1"=> $_POST["Address1"], ":address2"=> $_POST["Address2"], ":zip"=> $_POST["zipCode"], ":county"=> NULL);
-						
+
 		$stmt->execute($params);
-						
+
 		$address_id = intval($db->lastInsertId());
-		
+
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 
 		if( $_POST['CyberNumber'] != NULL){
@@ -324,7 +349,7 @@ if($_POST){
 				$child_str = NULL;
 			}
 			$stmt = $db->prepare("INSERT INTO `family`
-                        VALUES (DEFAULT, :maritalstatus, :referred,:familymemberrole, :primarylanguage, :otherlanguage, 
+                        VALUES (DEFAULT, :maritalstatus, :referred,:familymemberrole, :primarylanguage, :otherlanguage,
 								:childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
 								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement, :uid, :address_id, :person_id)");
 
@@ -332,7 +357,7 @@ if($_POST){
 						":familymemberrole"=> $_POST["familyMemberRole"], ":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"],
 						":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],":cybernumber"=> $_POST["CyberNumber"],":childlevelcare"=> $_POST["childsLevelofCare"],
 						":childplacement"=> $_POST["ChildsPlacement"],":childDiagnosis"=> $child_str,":childenrollmentedate"=> $_POST["ChildEnrollmentDate"],
-						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"], 
+						":cmodischargedate"=> $_POST["CMODischargeDate"],":cmostatus"=> $_POST["CMODischargeStatus"],":dcppinvolvement"=> $_POST["DCPP"],":courtinvolvement"=> $_POST["CourtInvolvement"],
 						":uid"=>intval($_SESSION["ID"]), ":address_id"=> $address_id, ":person_id"=> $person_id );
 		}
 
@@ -343,8 +368,8 @@ if($_POST){
 								:primarylanguage, :otherlanguage, :childrenreceivingservices, :cybernumber,:childlevelcare,:childplacement,:childDiagnosis,
 								:childenrollmentedate, :cmodischargedate, :cmostatus, :dcppinvolvement, :courtinvolvement, :uid,:address_id, :person_id)");
 
-		$params = array(":maritalstatus"=> $_POST["maritalStatus"], ":referred"=> $_POST["referedby"], ":familymemberrole"=> $_POST["familyMemberRole"], 
-						":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"], ":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],  
+		$params = array(":maritalstatus"=> $_POST["maritalStatus"], ":referred"=> $_POST["referedby"], ":familymemberrole"=> $_POST["familyMemberRole"],
+						":primarylanguage"=> $_POST["PriamryLanguage"], ":otherlanguage"=> $_POST["OtherLanguage"], ":childrenreceivingservices"=> $_POST["ChildrenReceivingServices"],
 						":cybernumber"=> NULL,":childlevelcare"=> NULL,":childplacement"=> NULL,":childDiagnosis"=> NULL,
 						":childenrollmentedate"=> NULL, ":cmodischargedate"=> NULL,":cmostatus"=> NULL,":dcppinvolvement"=> NULL,
 						":courtinvolvement"=> NULL, ":uid"=>intval($_SESSION["ID"]), ":address_id"=> $address_id, ":person_id"=> $person_id);
