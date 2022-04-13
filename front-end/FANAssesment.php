@@ -1,7 +1,7 @@
 <?php
 
 require("config.php");
-session_start();
+include_once('navbar.php');
 
 	if(!(isset($_SESSION['role']))){
   header("Location: index.php");
@@ -9,14 +9,17 @@ session_start();
 	if(!($_SESSION['role']>=0)){
 	header("Location: index.php");
 }
-
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
 $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 $db= new PDO($connection_string, $dbuser, $dbpass);
-$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
-$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
+#$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
+$stmt = $db->prepare('SELECT fid, uid,person_id FROM family WHERE uid=:id');
 $stmt->execute(['id' => intval($_SESSION["ID"])]);
-$data = $stmt->fetchAll();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$counter = 0;
+#var_dump($data);
 
 ?>
 
@@ -39,9 +42,6 @@ $data = $stmt->fetchAll();
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-  <?php
-      include_once('navbar.php');
-  ?>
   <body>
     <div class="col">
     <form class="form1" name="mainForm" id="mainForm" method="post" enctype="multipart/form-data">
@@ -50,8 +50,15 @@ $data = $stmt->fetchAll();
 	  <br>
       <select name="family" required>
         <option value=""  disabled selected>Select an Option</option>
-		<?php foreach ($data as $row) { ?>
-		<option value= <?php echo $row["fid"]; ?> ><?php echo $row["firstname"]; echo " "; echo $row["lastname"]; echo " "; echo $row["fid"];}?> </option>
+		<?php foreach ($data as $row) {
+			$stmt = $db->prepare('SELECT firstname, lastname FROM personal_info WHERE person_id=:id');
+			$stmt->execute(['id' => $row['person_id']]);
+			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+			#var_dump($data2);
+
+			?>
+		<option value= <?php echo $row["fid"]; ?> > <?php echo $data2[0]["firstname"]; echo " "; echo $data2[0]["lastname"]; echo " "; echo $row["fid"];}?> </option>
       </select><br><br><br><br>
 
       <purple>
@@ -547,8 +554,7 @@ $data = $stmt->fetchAll();
 
 
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-ini_set('display_errors', 1);
+
 
 	if($_POST){
 
@@ -576,7 +582,7 @@ ini_set('display_errors', 1);
 
 		$sql = sprintf( $sql, $valuesClause );
 
-		var_dump($_FILES);
+		#var_dump($_FILES);
 
 		#var_dump($table_fields);
 		$counter = 0;
