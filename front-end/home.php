@@ -21,6 +21,30 @@ if(!($_SESSION['role']>=0)){
 <!DOCTYPE html>
 
 <html>
+<style media="screen">
+  table{
+    border-color:#004060;
+    border-width: 3px;
+
+  }
+  th, td{
+    padding: 8px;
+    border-width: 2px;
+  }
+  split{
+	  width: 300px;
+    float: right;
+    padding-top: 30px;
+	  border-radius: 10px;
+    border-style: solid;
+	  padding-bottom: 10px;
+  }
+  .change{
+	border-radius: 10px;
+    padding: 5px;
+    padding-top: 9px;
+  }
+</style>
 
 <head>
 
@@ -28,7 +52,7 @@ if(!($_SESSION['role']>=0)){
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title></title>
+  <title>Home</title>
 
 <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
 
@@ -47,18 +71,48 @@ if(!($_SESSION['role']>=0)){
 ?>
 
 <body>
+<br>
+<split>
+	<div class="col">
+	<h3><b>User Information</b></h3><br>
+	<h5>Username</h5>
 
-</body>
+	<?php
+		$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+		$db= new PDO($connection_string, $dbuser, $dbpass);
+		$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
+		$stmt->execute(['id' => intval($_SESSION["ID"])]);
+		$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo $data1[0]["username"];
+	?>
+	<br><br>
+	<h5>FSO</h5>
+	<?php
+		$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+		$db= new PDO($connection_string, $dbuser, $dbpass);
+		$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:id');
+		$stmt->execute(['id' => intval($_SESSION["ID"])]);
+		$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$id = $data1[0]["fso_id"];
+		$stmt = $db->prepare('SELECT name FROM FSO WHERE fso_id=:id');
+		$stmt->execute(['id' => intval($id)]);
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo $data2[0]["name"];
+	?>
+	<br><br>
+	<button class="change" onclick="window.location.href='http://familysupportorganizationo.sg-host.com/changepassword.php';">
+      <h5>Change Password</h5>
+    </button>
+	</div>
+</split>
+<div class="col">
 
-</html>
-
+<h3><b>Assigned Families</b></h3>
 <?php
-	echo "Assigned Families: \n \n";
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);
 	require("config.php");
-	session_start();
-	
+
 	if(!(isset($_SESSION['role']))){
   header("Location: index.php");
 }
@@ -67,7 +121,7 @@ if(!($_SESSION['role']>=0)){
 }
 
 	$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-	$db= new PDO($connection_string, $dbuser, $dbpass); 
+	$db= new PDO($connection_string, $dbuser, $dbpass);
 
 	echo "<br>";
 	echo "<table border='1'>";
@@ -75,28 +129,28 @@ if(!($_SESSION['role']>=0)){
 	echo "<td> First Name </td>";
 	echo "<td> Last Name </td>";
 	echo "<td> Case Number </td>";
-	echo "<td> Assigned Employee </td>";
-	
+	#echo "<td> Assigned Employee </td>";
+
 	try{
-		
+
 		$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
 
 		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		
-		
-		
+
+
+
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-		
+
 		foreach ($data as $family_id){
-		
+
 			$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
 			$stmt->execute(['pers_id' => $family_id['person_id']]);
 			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			#var_dump($data2);
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-			
+
 			$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
 			$stmt->execute(['id' => intval($_SESSION["ID"])]);
 			$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -107,20 +161,25 @@ if(!($_SESSION['role']>=0)){
 				$stmt->execute(['id' => intval($data[0]["fid"])]);
 				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-				
+
 				echo "<td>" . $family_id['fid'] . "</td>";
 				echo "<td>" . $row["firstname"] . "</td>";
 				echo "<td>" . $row["lastname"] . "</td>";
 				echo "<td>" . $data3[0]["casenumber"] . "</td>";
-				echo "<td>" . $data1[0]["username"] . "</td>";
+				#echo "<td>" . $data1[0]["username"] . "</td>";
 				}
 		}
 
 	}
-	
+
 	catch(Exception $e){
 			echo $e->getMessage();
 			exit();
 		}
 
 ?>
+
+</div>
+</body>
+
+</html>
