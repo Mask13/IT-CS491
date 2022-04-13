@@ -133,13 +133,9 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
       <label for="homePhone">Home Phone:</label>
       <input type="tel" id="homePhone" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" name="homePhone" required><br>
       <label for="careManager">Care Manager:</label>
-      <select name="careManager">
-        <option value="Sample">Sample</option>
-      </select><br>
+      <input type="text" name="careManager"><br>
       <label for="DYFSContact">DYFS Contact:</label>
-      <select name="DYFSContact">
-        <option value="Sample">Sample</option>
-      </select><br>
+			<input type="text" name="DYFSContact"><br>
       <label for="referedby">Refered By:</label>
       <select name="referedby">
         <option value="DD">DD</option>
