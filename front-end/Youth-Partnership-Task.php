@@ -39,3 +39,29 @@
   </div>
   </body>
 </html>
+
+<?php
+
+	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+if($_POST){
+
+	try{
+		$db = new PDO($connection_string, $dbuser, $dbpass);Youth
+		$stmt = $db->prepare("INSERT INTO `YouthPartnershipTask`
+							VALUES (:"Date of Task", :"Task Duration Hours", :"Task Duration Minutes", :staff, :description, DEFAULT)");
+   
+    $params = array(":Date of Task"=> $_POST["Date of Task"],":Task Duration Hours"=> $_POST["Task Duration Hours"], ":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Staff"=> $_POST["staff"],
+						":Description of Task"=> $_POST["Description of Task"]);
+		$stmt->execute($params);
+    
+      //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    }
+     catch(Exception $e){
+          echo $e->getMessage();
+             exit();
+     }
+	}
+ ?>
+	
