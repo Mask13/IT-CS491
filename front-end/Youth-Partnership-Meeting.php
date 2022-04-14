@@ -298,13 +298,11 @@ if($_POST){
 			$participants_str = NULL;
 		}
     
-    $params = array(":Date of Meeting"=> $_POST["Date of Meeting"],":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Meeting/Event Duration"=> $_POST["Meeting/Event Duration"], ":participants"=> $_POST["participants"],
-						":notes"=> $_POST["notes"], ":uid"=>intval($_SESSION["ID"]));
+    $params = array(":Date of Meeting"=> $_POST["Date of Meeting"],":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Meeting/Event Duration Dours"=> $_POST["Meeting/Event Duration Hours"], ":participants"=> $_POST["participants"],
+						":notes"=> $_POST["notes"]));
 		$stmt->execute($params);
 
-		//$id = $db->lastInsertId();
-
-    //var_dump($id);
+    
    //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
     }
      catch(Exception $e){
