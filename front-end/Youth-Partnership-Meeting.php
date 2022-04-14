@@ -289,7 +289,7 @@ if($_POST){
 	//var_dump($_POST);
 	
 	$stmt = $db->prepare("INSERT INTO 'YouthPartnershipMeeting'
-                                      VALUES( :"Date of Meeting" :"Meeting/Event Duration Minutes", :"Meeting/Event Duration Hours", :"Type of Meeting", :participants, :notes, :uid, DEFAULT)");
+                                      VALUES( :"Date of Meeting" :"Meeting/Event Duration Minutes", :"Meeting/Event Duration Hours", :"Type of Meeting", :participants, :notes, DEFAULT)");
   if ($_POST["Participants"]){
 			$participants_str = implode (", ", $_POST["Participants"]);
 		}
