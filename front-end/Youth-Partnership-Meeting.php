@@ -287,7 +287,6 @@ if($_POST){
 	$db = new PDO($connection_string, $dbuser, $dbpass);
 	
 	//var_dump($_POST);
-	//var_dump($_POST["firstName"]);
 	
 	$stmt = $db->prepare("INSERT INTO 'YouthPartnershipMeeting'
                                       VALUES( :"Date of Meeting" :"Meeting/Event Duration Minutes", :"Meeting/Event Duration Hours", :"Type of Meeting", :participants, :notes, :uid, DEFAULT)");
