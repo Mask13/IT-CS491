@@ -46,7 +46,7 @@
 
 		try{
 			
-			$stmt = $db->prepare('SELECT fid,firstname,lastname FROM family WHERE uid=:u_id');
+			$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
 
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
@@ -60,14 +60,16 @@
 				$stmt->execute(['fam_id' => $family_id[0]]);
 				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				
-				
+				$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
+				$stmt->execute(['pers_id' => $family_id['person_id']]);
+				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 				foreach ($data2 as $row){
 					echo "<tr>";
 					echo "<td>" . $data[0]["fid"] . "</td>";
-					echo "<td>" . $data[0]["firstname"] . "</td>";
-					echo "<td>" . $data[0]["lastname"] . "</td>";
+					echo "<td>" . $data3[0]["firstname"] . "</td>";
+					echo "<td>" . $data3[0]["lastname"] . "</td>";
 
 					echo "<td>" . $row["prompt"] . "</td>";
 					echo "<td>" . $row["court"] . "</td>";
