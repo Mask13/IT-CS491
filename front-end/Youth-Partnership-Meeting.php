@@ -1,71 +1,5 @@
 
-<?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-ini_set('display_errors', 1);
 
-require("config.php");
-
-if(!(isset($_SESSION['role']))){
-  header("Location: index.php");
-}
-	if(!($_SESSION['role']>=0)){
-	header("Location: index.php");
-}
-
-$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-
-$success = "";
-$error = "";
-
-if(isset($_POST) && !empty($_POST['submit_meeting']){
-	$date_meet = $_POST['date_meet'];
-	$duration_hours = $_POST['duration_hours'];
-	$duration_minutes = $_POST['duration_meetins'];
-	$type_meeting = $_POST['type_meeting'];
-	$participants = "";
-	$notes = $_POST['notes'];
-	
-	$sql = "INSERT INTO `YouthPartnershipMeeting` (`date_of_meeting`, `duration_hours`, `duration_minutes`, `type_of_meeting`, `participants`, `notes`);
-	$sql .= " VALUES('$date_meet', '$duration_hours', '$duration_minutes', '$type_meeting', '$participants', '$notes')";
-	
-	if ($db->query($sql)) {
-		$success = "Success";
-		
-	} else {
-		$error = "Database error"
-	}
-	
-}
-
-if(isset($_POST) && !empty($_POST['first_name']){
-	
-	$db = new PDO($connection_string, $dbuser, $dbpass);
-	
-	//var_dump($_POST);
-	
-	$stmt = $db->prepare("INSERT INTO 'YouthPartnershipMeeting'
-                                      VALUES( :"Date of Meeting" :"Meeting/Event Duration Minutes", :"Meeting/Event Duration Hours", :"Type of Meeting", :participants, :notes, DEFAULT)");
-  if ($_POST["Participants"]){
-			$participants_str = implode (", ", $_POST["Participants"]);
-		}
-
-		else{
-			$participants_str = NULL;
-		}
-    
-    $params = array(":Date of Meeting"=> $_POST["Date of Meeting"],":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Meeting/Event Duration Dours"=> $_POST["Meeting/Event Duration Hours"], ":participants"=> $_POST["participants"],
-						":notes"=> $_POST["notes"]));
-		$stmt->execute($params);
-
-    
-   //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-    }
-     catch(Exception $e){
-          echo $e->getMessage();
-             exit();
-     }
-	}
- ?>
 
 <html lang="en" dir="ltr">
 <style media="screen">
@@ -106,7 +40,7 @@ if(isset($_POST) && !empty($_POST['first_name']){
       <br>
       <label for="Notes">Notes:</label><br>
       <textarea form="mainForm" name="notes" rows="5" cols="80"></textarea>
-	    <?php if (!empty($success)) echo '<h3 id="success_message">' . $success . '</h3>'; ?>
+	    
       <br><br>
 	    <input type="hidden" name="submit_meeting" value="true"/>
       <input type="submit" value="Submit">
@@ -336,6 +270,75 @@ if(isset($_POST) && !empty($_POST['first_name']){
     </form>
   </div>
   </body>
+
+
 </html>
+
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+require("config.php");
+
+if(!(isset($_SESSION['role']))){
+  header("Location: index.php");
+}
+	if(!($_SESSION['role']>=0)){
+	header("Location: index.php");
+}
+
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+
+
+
+if(isset($_POST) && !empty($_POST['submit_meeting']){
+	$date_meet = $_POST['date_meet'];
+	$duration_hours = $_POST['duration_hours'];
+	$duration_minutes = $_POST['duration_meetins'];
+	$type_meeting = $_POST['type_meeting'];
+	$participants = "";
+	$notes = $_POST['notes'];
+	
+	$sql = "INSERT INTO `YouthPartnershipMeeting` (`date_of_meeting`, `duration_hours`, `duration_minutes`, `type_of_meeting`, `participants`, `notes`);
+	$sql .= " VALUES('$date_meet', '$duration_hours', '$duration_minutes', '$type_meeting', '$participants', '$notes')";
+	
+	if ($db->query($sql)) {
+		echo '<script>alert("Success")</script>';
+		
+	} else {
+		echo '<script>alert("Database error")</script>';
+	}
+	
+}
+
+// if(isset($_POST) && !empty($_POST['first_name']){
+	
+// 	$db = new PDO($connection_string, $dbuser, $dbpass);
+	
+// 	//var_dump($_POST);
+	
+// 	$stmt = $db->prepare("INSERT INTO 'YouthPartnershipMeeting'
+//                                       VALUES( :"Date of Meeting" :"Meeting/Event Duration Minutes", :"Meeting/Event Duration Hours", :"Type of Meeting", :participants, :notes, DEFAULT)");
+//   if ($_POST["Participants"]){
+// 			$participants_str = implode (", ", $_POST["Participants"]);
+// 		}
+
+// 		else{
+// 			$participants_str = NULL;
+// 		}
+    
+//     $params = array(":Date of Meeting"=> $_POST["Date of Meeting"],":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Meeting/Event Duration Dours"=> $_POST["Meeting/Event Duration Hours"], ":participants"=> $_POST["participants"],
+// 						":notes"=> $_POST["notes"]));
+// 		$stmt->execute($params);
+
+    
+//    //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+//     }
+//      catch(Exception $e){
+//           echo $e->getMessage();
+//              exit();
+//      }
+// 	}
+ ?>
 
 	
