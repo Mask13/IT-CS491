@@ -1,7 +1,4 @@
 <?php
-
-session_start();
-
 require ("config.php");
 
 if(!(isset($_SESSION['role']))){
@@ -80,7 +77,7 @@ if(!($_SESSION['role']>=0)){
 	<?php
 		$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 		$db= new PDO($connection_string, $dbuser, $dbpass);
-		$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
+		$stmt = $db->prepare('SELECT username,fso_id FROM users WHERE id=:id');
 		$stmt->execute(['id' => intval($_SESSION["ID"])]);
 		$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo $data1[0]["username"];
@@ -88,14 +85,8 @@ if(!($_SESSION['role']>=0)){
 	<br><br>
 	<h5>FSO</h5>
 	<?php
-		$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-		$db= new PDO($connection_string, $dbuser, $dbpass);
-		$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:id');
-		$stmt->execute(['id' => intval($_SESSION["ID"])]);
-		$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		$id = $data1[0]["fso_id"];
 		$stmt = $db->prepare('SELECT name FROM FSO WHERE fso_id=:id');
-		$stmt->execute(['id' => intval($id)]);
+		$stmt->execute(['id' => $data1[0]["fso_id"]]);
 		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo $data2[0]["name"];
 	?>
@@ -111,17 +102,6 @@ if(!($_SESSION['role']>=0)){
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);
-	require("config.php");
-
-	if(!(isset($_SESSION['role']))){
-  header("Location: index.php");
-}
-	if(!($_SESSION['role']>=0)){
-	header("Location: index.php");
-}
-
-	$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-	$db= new PDO($connection_string, $dbuser, $dbpass);
 
 	echo "<br>";
 	echo "<table border='1'>";
@@ -150,16 +130,13 @@ if(!($_SESSION['role']>=0)){
 			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			#var_dump($data2);
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-
-			$stmt = $db->prepare('SELECT username FROM users WHERE id=:id');
-			$stmt->execute(['id' => intval($_SESSION["ID"])]);
-			$data1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 			foreach ($data2 as $row){
 				echo "<tr>";
 				$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
-				$stmt->execute(['id' => intval($data[0]["fid"])]);
+				$stmt->execute(['id' => intval($family_id["fid"])]);
 				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				#var_dump($data3);
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 
 				echo "<td>" . $family_id['fid'] . "</td>";
