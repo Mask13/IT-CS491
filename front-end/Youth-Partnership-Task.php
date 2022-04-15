@@ -37,14 +37,6 @@ if(isset($_POST) && !empty($_POST['date_task'])){
 			$error = "Error";
 		}
 		
-// 		$stmt = $db->prepare("INSERT INTO `YouthPartnershipTask` 
-// 							VALUES (:"Date of Task", :"Task Duration Hours", :"Task Duration Minutes", :staff, :description, DEFAULT)");
-   
-//     $params = array(":Date of Task"=> $_POST["Date of Task"],":Task Duration Hours"=> $_POST["Task Duration Hours"], ":Meeting/Event Duration Minutes"=> $_POST["Meeting/Event Duration Minutes"], ":Staff"=> $_POST["staff"],
-// 						":Description of Task"=> $_POST["Description of Task"]);
-// 		$stmt->execute($params);
-    
-      //echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
     }
      catch(Exception $e){
           echo $e->getMessage();
