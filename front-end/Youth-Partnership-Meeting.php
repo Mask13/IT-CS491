@@ -36,6 +36,7 @@
       <input type="text" name="type_meeting">
       <br>
       <b>Participants:</b><br>
+	    <input type="checkbox" name="participants" value="1"/>
       Option to check off the enrolled participants (youth) that attended the meeting that day
       <br>
       <label for="Notes">Notes:</label><br>
@@ -296,7 +297,8 @@ if(isset($_POST) && !empty($_POST['submit_meeting']){
 	$duration_hours = $_POST['duration_hours'];
 	$duration_minutes = $_POST['duration_meetins'];
 	$type_meeting = $_POST['type_meeting'];
-	$participants = "";
+	
+	$participants = $_POST['participants'];
 	$notes = $_POST['notes'];
 	
 	$sql = "INSERT INTO `YouthPartnershipMeeting` (`date_of_meeting`, `duration_hours`, `duration_minutes`, `type_of_meeting`, `participants`, `notes`);
