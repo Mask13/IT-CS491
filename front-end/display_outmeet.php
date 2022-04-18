@@ -57,7 +57,16 @@
 
 	</head>
 
-
+	<style>
+		table{
+			border-color:#004060;
+			border-width: 3px;
+		}
+		th, td{
+			padding: 8px;
+			border-width: 2px;
+		}
+	</style>
 
 
 </html>
@@ -99,6 +108,8 @@
 
 
 	echo "<br>";
+
+	echo "<div class='col'>";
 
 	echo "<table border='1'>";
 

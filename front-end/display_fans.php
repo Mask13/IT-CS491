@@ -15,6 +15,17 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	</head>
+	<style>
+		table{
+			border-color:#004060;
+			border-width: 3px;
+		}
+		th, td{
+			padding: 8px;
+			border-width: 2px;
+		}
+	</style>
+	
 </html>
 
 <?php
@@ -32,17 +43,22 @@
 		$db= new PDO($connection_string, $dbuser, $dbpass);
 		#$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
 		echo "<br>";
-		echo "<table border='1'>";
+		echo "<div class='col'>";
+		echo "<table id='tbl' border='1'>";
 		try{
+			echo "<td>First name</td>";
+			echo "<td>Last name</td>";
 			$q = $db->prepare("DESCRIBE fans");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
 			array_pop($table_fields);
 			array_pop($table_fields);
 			foreach ($table_fields as $col_name) {
+				$col_name = ucwords(str_replace("_"," ",$col_name));
 				echo "<td>" .$col_name."</td>";
 				}
-			$stmt = $db->prepare('SELECT fid FROM family WHERE uid=:u_id');
+				
+			$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
 
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
@@ -52,11 +68,17 @@
 				$stmt->execute(['fam_id' => $family_id[0]]);
 				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				
+				$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
+				$stmt->execute(['pers_id' => $family_id['person_id']]);
+				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 				#var_dump($data2);
 				
 				foreach($data2 as $row){
 					echo "<tr>";
+					echo "<td>" . $data3[0]['firstname'] . "</td>";
+					echo "<td>" . $data3[0]['lastname'] . "</td>";
 					#var_dump($row);
 					array_pop($row);
 					array_pop($row);
@@ -65,7 +87,6 @@
 					$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					unset($row['fan_file_id']);
 					foreach ($row as $value){
-						
 						
 						echo "<td>" . $value . "</td>";
 				  }

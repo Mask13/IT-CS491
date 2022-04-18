@@ -15,6 +15,16 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	</head>
+	<style>
+		table{
+			border-color:#004060;
+			border-width: 3px;
+		}
+		th, td{
+			padding: 8px;
+			border-width: 2px;
+		}
+	</style>
 </html>
 <?php
 
@@ -30,12 +40,14 @@
        $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
        $db= new PDO($connection_string, $dbuser, $dbpass);
 	   echo "<br>";
+	   echo "<div class='col'>";
 	   echo "<table border='1'>";
        try{
 		   $q = $db->prepare("DESCRIBE warmline");
 		   $q->execute();
 		   $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
 		   foreach ($table_fields as $col_name) {
+			   $col_name = ucwords(str_replace("_"," ",$col_name));
 			   echo "<td>" .$col_name."</td>";
 			   }
 			   $stmt = $db->prepare('SELECT * FROM warmline WHERE uid=:u_id');

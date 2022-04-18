@@ -11,6 +11,18 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	</head>
+
+	<style>
+		table{
+			border-color:#004060;
+			border-width: 3px;
+		}
+		th, td{
+			padding: 8px;
+			border-width: 2px;
+		}
+	</style>
+	
 </html>
 <?php
       include_once('navbar.php');
@@ -30,6 +42,7 @@
 	$db= new PDO($connection_string, $dbuser, $dbpass);
 
 	echo "<br>";
+	echo "<div class='col'>";
 	echo "<table border='1'>";
 	echo "<td> ID </td>";
 	echo "<td> First Name </td>";
@@ -46,7 +59,7 @@
 
 		try{
 			
-			$stmt = $db->prepare('SELECT fid,firstname,lastname FROM family WHERE uid=:u_id');
+			$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
 
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
@@ -60,14 +73,16 @@
 				$stmt->execute(['fam_id' => $family_id[0]]);
 				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				
-				
+				$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
+				$stmt->execute(['pers_id' => $family_id['person_id']]);
+				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 				foreach ($data2 as $row){
 					echo "<tr>";
 					echo "<td>" . $data[0]["fid"] . "</td>";
-					echo "<td>" . $data[0]["firstname"] . "</td>";
-					echo "<td>" . $data[0]["lastname"] . "</td>";
+					echo "<td>" . $data3[0]["firstname"] . "</td>";
+					echo "<td>" . $data3[0]["lastname"] . "</td>";
 
 					echo "<td>" . $row["prompt"] . "</td>";
 					echo "<td>" . $row["court"] . "</td>";
