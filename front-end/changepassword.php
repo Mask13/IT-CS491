@@ -41,7 +41,7 @@ if(!($_SESSION['role']>=0)){
 		include_once('navbar.php');
 	?><br>
 	<style>
-
+  
 		body{
       background-image: url("https://lh3.googleusercontent.com/_uLtK2p65lwRVcqkAa-jenk95kdYIGr9-tHHh3rJnHLXsWzjHf6mgEOZFqykyFr7XtLSVsk_aBjOmS-ZMb8=s1600");
     }
