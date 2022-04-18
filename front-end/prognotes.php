@@ -28,7 +28,7 @@
   </style>
   <head>
     <meta charset="utf-8">
-    <title>FANS Assesment</title>
+    <title>Progress Notes</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -41,7 +41,7 @@
   </head>
   <body>
     <div class="col">
-      <form name="mainForm" id= method="post" enctype="multipart/form-data">
+      <form name="mainForm" id= "mainForm" method="post" enctype="multipart/form-data">
 	  	<label>Select the Family.</label>
 	  <br>
       <select name="family" required>
@@ -57,13 +57,13 @@
 		<option value= <?php echo $row["fid"]; ?> > <?php echo $data2[0]["firstname"]; echo " "; echo $data2[0]["lastname"]; echo " "; echo $row["fid"];}?> </option>
       </select><br><br><br><br>
         <label for="noteTime">Note Time:</label>
-        <input type="datetime-local" name="noteTime" required/>
+        <input type="datetime-local"  name="noteTime" required />
         <br>
         <label for="duration">Duration in Minutes:</label>
-        <input type="number" name="duration"required/>
+        <input type="number" name="duration" />
         <br>
         <label for="noteType">Note Type:</label>
-        <select name="noteType">
+        <select name="noteType" required>
           <option disabled selected>Select an option</option>
           <option value="FSO:Child/FamilyParticipation">FSO:Child/Family Participation</option>
           <option value="FSO:CollateralContacts">FSO:Collateral Contacts</option>
@@ -153,6 +153,79 @@
 </html>
 
 <?php
+
+#var_dump($_POST);
 	
+	if($_POST){
+		$q = $db->prepare("DESCRIBE progress_note");
+		$q->execute();
+		$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+
+		$wat = $_POST['family'];
+		unset($_POST['family']);
+		array_pop($table_fields);
+		$table_fields[13] = 'fid';
+		
+		$sql = 'INSERT INTO progress_note VALUES ( %s, DEFAULT)';
+
+		$valuesClause = implode( ', ', array_map( function( $value ) { return ':' . $value; }, $table_fields ) );
+
+		$sql = sprintf( $sql, $valuesClause );
+		
+		$counter = 0;
+		$params = [];
+		foreach ($_POST as $place => $other){
+			$temp = ":";
+			$temp .= $table_fields[$counter];
+			$params[$temp] = $other;
+			#echo $temp;
+			$counter++;
+		}
+		
+		$temp = ':';
+		$temp .= "fid";
+		$params[$temp] = $wat;
+		if(!empty($_FILES["filename"]["name"])){
+			$filename = $_FILES['filename']['name'];
+			$temp = explode(".", $_FILES["filename"]["name"]);
+			$newfilename = round(microtime(true)) . '.' . end($temp);
+			$destination = 'uploads/' . $filename;
+			$file = $_FILES['filename']['tmp_name'];
+
+			if ($_FILES['filename']['size'] > 500000) { // file shouldn't be larger than 500KB
+				echo "File too large!";
+			}
+
+			elseif (move_uploaded_file($file, $destination . $newfilename)) {
+				#echo ($destination . $newfilename);
+				$stmt1 = $db->prepare("INSERT INTO `file_info` VALUES (?,?,?,DEFAULT)");
+				$stmt1->execute([$filename, $newfilename, $destination . $newfilename]);
+				#echo "<pre>" . var_export($stmt1->errorInfo(), true) . "</pre>";
+				$params[':file_id'] = intval($db->lastInsertId());
+			}
+		}
+
+		else{
+			$params[':file_id'] = NULL;
+		}
+		
+		#var_dump($sql);
+		
+		try{
+
+			$stmt = $db->prepare($sql);
+
+			$stmt->execute($params);
+
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+		}
+
+		catch(Exception $e){
+				echo $e->getMessage();
+				exit();
+		}
+
+	
+	}
 
 ?>

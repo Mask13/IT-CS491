@@ -564,17 +564,8 @@ $counter = 0;
 
 		$wat = $_POST['family'];
 		unset($_POST['family']);
-		#$_POST['family'] = $wat;
-
-		#$wat1 = $table_fields['f_id'];
-		#unset($table_fields['f_id']);
-		#$table_fields['fid'] = $wat1;
-
-		#array_push($_POST, );
 		array_pop($table_fields);
 		$table_fields[39] = 'fid';
-
-
 
 		$sql = 'INSERT INTO fans VALUES ( %s, DEFAULT)';
 
