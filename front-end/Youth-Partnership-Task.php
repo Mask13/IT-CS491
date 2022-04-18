@@ -1,3 +1,48 @@
+<?php
+
+	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', 1);
+
+// get staff list first
+$staff_list = [];
+
+$db = new PDO($connection_string, $dbuser, $dbpass);
+
+$sql = "SELECT person_id, firstname, lastname FROM `personal_info`";
+$stmt = $db->query($sql);
+
+while($row = $query->fetch()) {
+	$staff_list[] = $row;	
+}
+
+if(isset($_POST) && !empty($_POST['date_task'])){
+	
+	$date_task = $_POST['date_task'];
+	$duration_hours = $_POST['duration_hours'];
+	$duration_minutes = $_POST['duration_minutes'];
+	$staff_id = $_POST['staff_id'];
+	$description = $_POST['description'];
+	
+	try{
+		$db = new PDO($connection_string, $dbuser, $dbpass);
+		
+		$sql = "INSERT INTO `YouthPartnershipTask` (`date_of_task`, `duration_hours`, `duration_minutes`, `staff_id`, `description`)";
+		$sql .= " VALUES('$date_task', '$duration_hours', '$duration_minutes', '$staff_id', '$description')";
+		
+		if($db->query($sql)) {
+			$success = "Success";
+		} esle {
+			$error = "Error";
+		}
+		
+    }
+     catch(Exception $e){
+          echo $e->getMessage();
+             exit();
+     }
+	}
+ ?>
+
 <html lang="en" dir="ltr">
 <style media="screen">
   red{
@@ -24,18 +69,30 @@
   <div class="col">
     <form name="mainForm" method="post">
       <label for="Date of Task">Date of Task:</label>
-      <input type="date" name="Date of Task"required>
+      <input type="date" name="date_task"required>
       <br>
       <label for="Task Duration">Task Duration:</label><br>
-      <input type="number" name="Task Duration Hour" placeholder="Hours"required>
-      <input type="number" name="Task Duration Minutes" placeholder="Minutes"required><br><br>
+      <input type="number" name="duration_hours" placeholder="Hours"required>
+      <input type="number" name="duration_hours" placeholder="Minutes"required><br><br>
       <label for="Staff">Staff:</label><br>
       PHP dropdown of staff
+	    <select name="staff_id">
+		    <?php
+		    foreach($staff_list as $staff) {
+			    ?>
+		    <option value="<?=$staff['person_id']?>"><?php echo $staff['firstname'] . ' ' . $staff['lastname'];?></option>
+		    <?php
+		    } 
+		    ?>
+	    </select>
       <br>
       <label for="Task Discription">Description of Task:<red>*</red></label><br>
-      <textarea form="mainForm" name="Task Discription" rows="5" cols="80"></textarea>
+      <textarea form="mainForm" name="description" rows="5" cols="80"></textarea>
       <input type="submit" value="Submit">
     </form>
   </div>
   </body>
 </html>
+
+
+	

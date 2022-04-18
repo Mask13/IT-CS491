@@ -13,7 +13,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 $db= new PDO($connection_string, $dbuser, $dbpass);
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
-$stmt = $db->prepare('SELECT firstname, lastname, fid, uid FROM family WHERE uid=:id');
+$stmt = $db->prepare('SELECT fid, uid, person_id FROM family WHERE uid=:id');
 $stmt->execute(['id' => intval($_SESSION["ID"])]);
 $data = $stmt->fetchAll();
 
@@ -72,8 +72,16 @@ $data = $stmt->fetchAll();
 	  <br>
       <select name="family" required>
         <option value=""  disabled selected>Select an Option</option>
-		<?php foreach ($data as $row) { ?>
-		<option value= <?php echo $row["fid"]; ?> ><?php echo $row["firstname"]; echo " "; echo $row["lastname"]; echo " "; echo $row["fid"];}?> </option>
+		<?php foreach ($data as $row) {
+			$stmt = $db->prepare('SELECT firstname, lastname FROM personal_info WHERE person_id=:id');
+			$stmt->execute(['id' => $row['person_id']]);
+			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+			#var_dump($data2);
+
+			?>
+		<option value= <?php echo $row["fid"]; ?> > <?php echo $data2[0]["firstname"]; echo " "; echo $data2[0]["lastname"]; echo " "; echo $row["fid"];}?> </option>
+      </select><br><br></option>
       </select><br>
 	  <label for="prompt">The FSO staff provided services promptly and efficiently.</label>
       <br>

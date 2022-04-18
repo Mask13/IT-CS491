@@ -23,7 +23,7 @@
 	</style>
 </html>
 
-      
+
 <?php
 include_once('navbar.php');
 	require("config.php");
@@ -34,19 +34,19 @@ include_once('navbar.php');
 	if(!($_SESSION['role']>=0)){
 	header("Location: index.php");
 	}
-	
+
 	$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 	$db= new PDO($connection_string, $dbuser, $dbpass);
-	
+
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);
-	
+
 	echo "<br>";
 	echo "<div class='col'>";
 	   echo "<table border='1'>";
        try{
 			echo "<td>ID</td>";
-			
+
 			$q = $db->prepare("DESCRIBE personal_info");
 			$q->execute();
 			$table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -58,18 +58,18 @@ include_once('navbar.php');
 				echo "<td>" .$col_name."</td>";
 			}
 			echo "<td>Address</td>";
-			
+
 			foreach ($table_fields as $col_name) {
 				$col_name = ucwords(str_replace("_"," ",$col_name));
 				echo "<td> Parent's " .$col_name."</td>";
 			}
 
 			echo "<td>Parent's Address</td>";
-			
+
 			echo "<td>Emergency's Contact 1 Name</td>";
 			echo "<td>Emergency's Contact 1 Phone</td>";
 			echo "<td>Emergency's Contact 1 Relationship</td>";
-			
+
 			echo "<td>Emergency's Contact 2 Name</td>";
 			echo "<td>Emergency's Contact 2 Phone</td>";
 			echo "<td>Emergency's Contact 2 Relationship</td>";
@@ -91,13 +91,13 @@ include_once('navbar.php');
 					echo "<td>School's Address</td>";
 				}
 			}
-			
-			
-				
+
+
+
 			$stmt = $db->prepare('SELECT * FROM youth_intake WHERE u_id=:u_id');
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			
+
 			foreach ($data as $row) {
 				echo "<tr>";
 				echo "<td>" .$row['youth_id']."</td>";
@@ -105,27 +105,27 @@ include_once('navbar.php');
 				$stmt->execute(['youth_id' => $row['youth_person']]);
 				#$stmt->nextRowset();
 				$youth_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT * FROM address WHERE address_id=:youth_address');
 				$stmt->execute(['youth_address' => $row['youth_address']]);
 				$youth_addr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT * FROM personal_info WHERE person_id=:parent_id');
 				$stmt->execute(['parent_id' => $row['parent_person']]);
 				$parent_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT * FROM address WHERE address_id=:parent_address');
 				$stmt->execute(['parent_address' => $row['parent_address']]);
 				$parent_addr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT * FROM address WHERE address_id=:school_address');
 				$stmt->execute(['school_address' => $row['school_address']]);
 				$school_addr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT name,phone,relationship FROM emergency_contact WHERE youth_id=:youth_id');
 				$stmt->execute(['youth_id' => $row['youth_id']]);
 				$emer_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				#var_dump($row);
 				unset($youth_data[0]['gender']); unset($youth_data[0]['race']); unset($parent_data[0]['gender']); unset($parent_data[0]['race']);
 				array_pop($youth_data[0]); array_pop($parent_data[0]);
@@ -133,29 +133,29 @@ include_once('navbar.php');
 					#var_dump($value);
 					echo "<td>" .$value."</td>";
 				}
-				
+
 				$youth_display_addr = $youth_addr[0]['address1'] . ", " . $youth_addr[0]['zip'] . ", " . $youth_addr[0]['county'];
 				echo "<td>" .$youth_display_addr."</td>";
-				
+
 				foreach ($parent_data[0] as $value){
 					#var_dump($value);
 					echo "<td>" .$value."</td>";
 				}
-				
-				
-				
+
+
+
 				$parent_display_addr = $parent_addr[0]['address1'] . ", " . $parent_addr[0]['zip'] . ", " . $parent_addr[0]['county'];
 				echo "<td>" .$parent_display_addr."</td>";
-				
+
 				$school_display_addr = $school_addr[0]['address1'] . ", " . $school_addr[0]['zip'] . ", " . $school_addr[0]['county'];
-				
+
 				foreach ($emer_data as $em_row){
 					foreach ($em_row as $value){
 					#var_dump($value);
 						echo "<td>" .$value."</td>";
 					}
 				}
-				
+
 				array_pop($row);
 				array_pop($row);
 				array_pop($row);
@@ -172,11 +172,11 @@ include_once('navbar.php');
 					echo "<td>" .$value."</td>";
 					$counter++;
 				}
-				
+
 			}
 			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 	   }
-	   
+
 	   catch(Exception $e){
 			echo $e->getMessage();
 			exit();
