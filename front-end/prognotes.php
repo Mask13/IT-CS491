@@ -98,15 +98,15 @@
         <select name="EncourageAdvocacy"required>
           <option disabled selected>Select an option</option>
           <option value="Not Evaluated">Not Evaluated</option>
-          <option value="I never speak">I never speak up at CFT/IEP meetings</option>
-          <option value="I rarely speak">I rarely speak up at CFT/IEP meetings</option>
-          <option value="I sometimes speak">I sometimes speak up at CFT/IEP meetings</option>
-          <option value="I often speak">I ofen speak up at CFT/IEP meetings</option>
-          <option value="I always speak">I always speak up at CFT/IEP meetings</option>
-          <option value="Proactive">I am proactive in resolving issues</option>
-          <option value="strong advocate">I am a string advocate for my child and family</option>
-          <option value="work to empower others">I work to empower other families</option>
-          <option value="work to have impact">I work to have an impact on the system of care</option>
+          <option value="I never speak up at CFT/IEP meetings">I never speak up at CFT/IEP meetings</option>
+          <option value="I rarely speak up at CFT/IEP meetings">I rarely speak up at CFT/IEP meetings</option>
+          <option value="I sometimes speak up at CFT/IEP meetings">I sometimes speak up at CFT/IEP meetings</option>
+          <option value="I ofen speak up at CFT/IEP meetings">I ofen speak up at CFT/IEP meetings</option>
+          <option value="I always speak at CFT/IEP meetings">I always speak up at CFT/IEP meetings</option>
+          <option value="I am proactive in resolving issues">I am proactive in resolving issues</option>
+          <option value="I am a strong advocate for my child and family">I am a strong advocate for my child and family</option>
+          <option value="I work to empower other other families">I work to empower other families</option>
+          <option value="I work to have an impact on the system of care">I work to have an impact on the system of care</option>
         </select>
         <br>
         <label for="supportlevel">Support Level</label>
@@ -119,7 +119,7 @@
           <option value="Supportive">Supportive</option>
           <option value="Transitioned">Transitioned</option>
           <option value="Engaged">Engaged</option>
-          <option value="Engaged at First">Engaged at First Face to Face</option>
+          <option value="Engaged at First Face to Face">Engaged at First Face to Face</option>
         </select>
         <br>
         <label for="startingLocation">Starting Location:</label>
