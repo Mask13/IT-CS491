@@ -8,9 +8,10 @@ if(!(isset($_SESSION['role']))){
 }
 
 if(!($_SESSION['role']>=0)){
-
   header("Location: index.php");
-
+}
+if(($_SESSION['role']==2)){
+  header("Location: homesuper.php");
 }
 
 ?>
@@ -32,6 +33,7 @@ if(!($_SESSION['role']>=0)){
 	  width: 300px;
     float: right;
     padding-top: 30px;
+    margin-right: 10px;
 	  border-radius: 10px;
     border-style: solid;
 	  padding-bottom: 10px;
