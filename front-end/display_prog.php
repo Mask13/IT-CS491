@@ -3,6 +3,19 @@
   ?>
 
 <html>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: bolder;
+    margin-right: 10px;
+    font-size: 40px;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    } 
+  </style>
 	<header>
 	<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
 
@@ -25,7 +38,7 @@
 			border-width: 2px;
 		}
 	</style>
-	
+	<br><bh>Family Notes</bh><br>
 </html>
 
 <?php

@@ -1,7 +1,20 @@
   <?php
       include_once('navbar.php');
   ?>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: bolder;
+    margin-right: 10px;
+    font-size: 40px;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    } 
+  </style>
+<html lang="en" dir="ltr">
 <html>
 	<header>
 	<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
@@ -15,6 +28,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	</head>
+
+  <br>
+  <bh>Warmlines Records</bh><br>
 	<style>
 		table{
 			border-color:#004060;

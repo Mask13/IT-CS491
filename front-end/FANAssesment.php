@@ -42,7 +42,7 @@ $counter = 0;
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-  <body>
+  <body style="background-color: #e0f5f5;">
     <div class="col">
     <form class="form1" name="mainForm" id="mainForm" method="post" enctype="multipart/form-data">
 
@@ -564,8 +564,17 @@ $counter = 0;
 
 		$wat = $_POST['family'];
 		unset($_POST['family']);
+		#$_POST['family'] = $wat;
+
+		#$wat1 = $table_fields['f_id'];
+		#unset($table_fields['f_id']);
+		#$table_fields['fid'] = $wat1;
+
+		#array_push($_POST, );
 		array_pop($table_fields);
 		$table_fields[39] = 'fid';
+
+
 
 		$sql = 'INSERT INTO fans VALUES ( %s, DEFAULT)';
 

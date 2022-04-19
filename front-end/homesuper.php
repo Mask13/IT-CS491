@@ -23,7 +23,7 @@ if(($_SESSION['role']==1)){
   table{
     border-color:#004060;
     border-width: 3px;
-
+    background-color: white;
   }
   th, td{
     padding: 8px;
@@ -37,12 +37,17 @@ if(($_SESSION['role']==1)){
 	  border-radius: 10px;
     border-style: solid;
 	  padding-bottom: 10px;
+    background-color: white;
   }
   .change{
 	  border-radius: 10px;
     padding: 5px;
     padding-top: 9px;
     width: 95%;
+  }
+  bh{
+    font-size: 40px;
+    font-family: 'Montserrat', sans-serif;
   }
 </style>
 
@@ -70,7 +75,7 @@ if(($_SESSION['role']==1)){
   include_once('navbar.php');
 ?>
 
-<body>
+<body style="background-color: #e0f5f5;">
 <br>
 <split>
 	<div class="col">
@@ -112,63 +117,63 @@ if(($_SESSION['role']==1)){
 </split>
 <div class="col">
 
-<h3><b>Assigned Families</b></h3>
-<?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-	ini_set('display_errors', 1);
-
-	echo "<br>";
-	echo "<table border='1'>";
-	echo "<td> ID </td>";
-	echo "<td> First Name </td>";
-	echo "<td> Last Name </td>";
-	echo "<td> Case Number </td>";
-	#echo "<td> Assigned Employee </td>";
-
-	try{
-
-		$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
-
-		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
-
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-
-		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-
-		foreach ($data as $family_id){
-
-			$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
-			$stmt->execute(['pers_id' => $family_id['person_id']]);
-			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			#var_dump($data2);
-			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-			foreach ($data2 as $row){
-				echo "<tr>";
-				$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
-				$stmt->execute(['id' => intval($family_id["fid"])]);
-				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				#var_dump($data3);
-				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-
-				echo "<td>" . $family_id['fid'] . "</td>";
-				echo "<td>" . $row["firstname"] . "</td>";
-				echo "<td>" . $row["lastname"] . "</td>";
-				echo "<td>" . $data3[0]["casenumber"] . "</td>";
-				#echo "<td>" . $data1[0]["username"] . "</td>";
-				}
-		}
-
-	}
-
-	catch(Exception $e){
-			echo $e->getMessage();
-			exit();
-		}
-
-?>
+    <bh>Assigned Families</bh>
+    <?php
+    	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+    	ini_set('display_errors', 1);
+    
+    	echo "<br>";
+    	echo "<table border='1'>";
+    	echo "<td> ID </td>";
+    	echo "<td> First Name </td>";
+    	echo "<td> Last Name </td>";
+    	echo "<td> Case Number </td>";
+    	#echo "<td> Assigned Employee </td>";
+    
+    	try{
+    
+    		$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
+    
+    		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+    
+    		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    
+    
+    		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    
+    		foreach ($data as $family_id){
+    
+    			$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
+    			$stmt->execute(['pers_id' => $family_id['person_id']]);
+    			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    			#var_dump($data2);
+    			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    			#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    			foreach ($data2 as $row){
+    				echo "<tr>";
+    				$stmt = $db->prepare('SELECT casenumber FROM cases WHERE fid=:id');
+    				$stmt->execute(['id' => intval($family_id["fid"])]);
+    				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    				#var_dump($data3);
+    				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    
+    				echo "<td>" . $family_id['fid'] . "</td>";
+    				echo "<td>" . $row["firstname"] . "</td>";
+    				echo "<td>" . $row["lastname"] . "</td>";
+    				echo "<td>" . $data3[0]["casenumber"] . "</td>";
+    				#echo "<td>" . $data1[0]["username"] . "</td>";
+    				}
+    		}
+    
+    	}
+    
+    	catch(Exception $e){
+    			echo $e->getMessage();
+    			exit();
+    		}
+    
+    ?>
 
 </div>
 </body>

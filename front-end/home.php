@@ -23,7 +23,7 @@ if(($_SESSION['role']==2)){
   table{
     border-color:#004060;
     border-width: 3px;
-
+    background-color: white;
   }
   th, td{
     padding: 8px;
@@ -37,11 +37,20 @@ if(($_SESSION['role']==2)){
 	  border-radius: 10px;
     border-style: solid;
 	  padding-bottom: 10px;
+    background-color: white;
+  }
+  body{
+      background-color: #e0f5f5;
   }
   .change{
-	border-radius: 10px;
+	  border-radius: 10px;
     padding: 5px;
     padding-top: 9px;
+    width: 95%;
+  }
+  bh{
+    font-size: 40px;
+    font-family: 'Montserrat', sans-serif;
   }
 </style>
 
@@ -69,7 +78,7 @@ if(($_SESSION['role']==2)){
   include_once('navbar.php');
 ?>
 
-<body>
+<body style="background-color: #e0f5f5;">
 <br>
 <split>
 	<div class="col">
@@ -100,7 +109,7 @@ if(($_SESSION['role']==2)){
 </split>
 <div class="col">
 
-<h3><b>Assigned Families</b></h3>
+<bh>Assigned Families</bh>
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);

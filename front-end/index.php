@@ -8,6 +8,10 @@ session_start();
      <meta charset="utf-8">
      <title>Login</title>
    </head>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
    <style>
        #container{
              width: 350px;
@@ -55,6 +59,7 @@ session_start();
            }
            .logo {
              font-size: 72px;
+             font-family: 'Poppins', sans-serif;
              color: #004060;
              background-color: #F0EAD6;
              width: 100%;
@@ -76,7 +81,7 @@ session_start();
              text-decoration: none;
              display: inline-block;
              font-size: 16px;
-             font-family: Sans-serif;
+             font-family: 'Montserrat', sans-serif;
              position: relative; top:0px;
 
              background-repeat:no-repeat;
@@ -101,6 +106,7 @@ session_start();
              box-sizing: border-box;
              resize: vertical;
              position: relative; bottom:50px;
+             font-family: 'Montserrat', sans-serif;
            }
            .formInput2{
              width: 100%;
@@ -110,6 +116,7 @@ session_start();
              box-sizing: border-box;
              resize: vertical;
              position: relative; bottom:40px;
+             font-family: 'Montserrat', sans-serif;
            }
            .label {
              padding: 12px 12px 12px 0;
@@ -118,11 +125,11 @@ session_start();
          }
   </style>
   <body>
-    <center class="navbar"><font class="logo"> NJFSO </font></center>
-    <div id= container>
+    <center class="navbar"><font class="logo"> NJAFSO </font></center>
+    <div id= "container">
       <font size="9">
       <center><form name="loginform" id="myForm" method="POST">
-          <center style="position: relative; bottom: 80px; font-family:Avant Garde; color:white" > Login:</center>
+          <center style="position: relative; bottom: 80px; font-family: 'Montserrat', sans-serif; color:white" > Login </center>
           <input class = "formInput1" type="username" id="username" name="username" placeholder="Enter Username"/><br>
           <input class = "formInput2" type="password" id="pass" name="password" placeholder="Enter Password"/><br>
         <input class= "button" type="submit" value="Login"/>
@@ -177,4 +184,6 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
 }
+
+
 ?>
