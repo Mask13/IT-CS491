@@ -13,7 +13,7 @@
 
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);
-	
+
 	$stmt = $db->prepare('SELECT fid, uid,person_id FROM family WHERE uid=:id');
 	$stmt->execute(['id' => intval($_SESSION["ID"])]);
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -21,11 +21,24 @@
 ?>
 
 <html lang="en" dir="ltr">
-  <style media="screen">
-    purple{
-      color: purple;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: normal;
+    margin-right: 10px;
+    font-size: 30px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    }
+    body{
+      background-color: #e0f5f5;
     }
   </style>
+  <br>
+  <bh>Family Progress Notes</bh><br><br>
   <head>
     <meta charset="utf-8">
     <title>Progress Notes</title>
@@ -39,13 +52,13 @@
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-  <body>
+  <body style="background-color: #e0f5f5;">
     <div class="col">
       <form name="mainForm" id= "mainForm" method="post" enctype="multipart/form-data">
-	  	<label>Select the Family.</label>
+	  	<label>Select the Family:</label>
 	  <br>
       <select name="family" required>
-        <option value=""  disabled selected>Select an Option</option>
+        <option value=""  disabled selected>--Select--</option>
 		<?php foreach ($data as $row) {
 			$stmt = $db->prepare('SELECT firstname, lastname FROM personal_info WHERE person_id=:id');
 			$stmt->execute(['id' => $row['person_id']]);
@@ -55,7 +68,7 @@
 
 			?>
 		<option value= <?php echo $row["fid"]; ?> > <?php echo $data2[0]["firstname"]; echo " "; echo $data2[0]["lastname"]; echo " "; echo $row["fid"];}?> </option>
-      </select><br><br><br><br>
+      </select><br><br>
         <label for="noteTime">Note Time:</label>
         <input type="datetime-local"  name="noteTime" required />
         <br>
@@ -64,7 +77,7 @@
         <br>
         <label for="noteType">Note Type:</label>
         <select name="noteType" required>
-          <option disabled selected>Select an option</option>
+          <option disabled selected>--Select--</option>
           <option value="FSO:Child/FamilyParticipation">FSO:Child/Family Participation</option>
           <option value="FSO:CollateralContacts">FSO:Collateral Contacts</option>
           <option value="FSO:ContactFamily">FSO:Contact with Family</option>
@@ -82,7 +95,7 @@
         <br><br>
         <label for="contactLocation">Contact Location:</label>
         <select name="contactLocation"required>
-          <option disabled selected>Select an option</option>
+          <option disabled selected>--Select--</option>
           <option value="Program Site">At Program Stie</option>
           <option value="Church">Church</option>
           <option value="Court">Court</option>
@@ -96,7 +109,7 @@
         </select><br>
         <label for="EncourageAdvocacy">Encourage Advocacy/Legacy:</label>
         <select name="EncourageAdvocacy"required>
-          <option disabled selected>Select an option</option>
+          <option disabled selected>--Select--</option>
           <option value="Not Evaluated">Not Evaluated</option>
           <option value="I never speak up at CFT/IEP meetings">I never speak up at CFT/IEP meetings</option>
           <option value="I rarely speak up at CFT/IEP meetings">I rarely speak up at CFT/IEP meetings</option>
@@ -111,7 +124,7 @@
         <br>
         <label for="supportlevel">Support Level</label>
         <select name="supportlevel"required>
-          <option disabled selected>Select an option</option>
+          <option disabled selected>--Select--</option>
           <option value="New Family">New Family</option>
           <option value="Not Engaged">Not Engaged</option>
           <option value="Intensive">Intensive</option>
@@ -139,7 +152,7 @@
         <br>
         <label for="service">Service:</label>
         <select name="service"required>
-          <option disabled selected>Select an option</option>
+          <option disabled selected>--Select--</option>
           <option value="weekly">Weekly</option>
           <option value="Bi-weekly">Bi-Weekly</option>
           <option value="Monthly">Monthly</option>
@@ -155,7 +168,7 @@
 <?php
 
 #var_dump($_POST);
-	
+
 	if($_POST){
 		$q = $db->prepare("DESCRIBE progress_note");
 		$q->execute();
@@ -165,13 +178,13 @@
 		unset($_POST['family']);
 		array_pop($table_fields);
 		$table_fields[13] = 'fid';
-		
+
 		$sql = 'INSERT INTO progress_note VALUES ( %s, DEFAULT)';
 
 		$valuesClause = implode( ', ', array_map( function( $value ) { return ':' . $value; }, $table_fields ) );
 
 		$sql = sprintf( $sql, $valuesClause );
-		
+
 		$counter = 0;
 		$params = [];
 		foreach ($_POST as $place => $other){
@@ -181,7 +194,7 @@
 			#echo $temp;
 			$counter++;
 		}
-		
+
 		$temp = ':';
 		$temp .= "fid";
 		$params[$temp] = $wat;
@@ -208,9 +221,9 @@
 		else{
 			$params[':file_id'] = NULL;
 		}
-		
+
 		#var_dump($sql);
-		
+
 		try{
 
 			$stmt = $db->prepare($sql);
@@ -225,7 +238,7 @@
 				exit();
 		}
 
-	
+
 	}
 
 ?>
