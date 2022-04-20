@@ -12,25 +12,25 @@ $stmt->execute();
 $staff_list = $stmt->fetchAll();
 
 if(isset($_POST) && !empty($_POST['date_task'])){
-
+	
 	$date_task = $_POST['date_task'];
 	$duration_hours = $_POST['duration_hours'];
 	$duration_minutes = $_POST['duration_minutes'];
 	$staff_id = $_POST['staff_id'];
 	$description = $_POST['description'];
-
+	
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
-
+		
 		$sql = "INSERT INTO `YouthPartnershipTask` (`date_of_task`, `duration_hours`, `duration_minutes`, `staff_id`, `description`)";
 		$sql .= " VALUES('$date_task', '$duration_hours', '$duration_minutes', '$staff_id', '$description')";
-
+		
 		if($db->query($sql)) {
 			$success = "Success";
 		} else {
 			$error = "Error";
 		}
-
+		
     }
      catch(Exception $e){
           echo $e->getMessage();
@@ -79,7 +79,7 @@ if(isset($_POST) && !empty($_POST['date_task'])){
 			    ?>
 		    <option value="<?=$staff['person_id']?>"><?php echo $staff['firstname'] . ' ' . $staff['lastname'];?></option>
 		    <?php
-		    }
+		    } 
 		    ?>
 	    </select>
       <br>
@@ -90,3 +90,6 @@ if(isset($_POST) && !empty($_POST['date_task'])){
   </div>
   </body>
 </html>
+
+
+	

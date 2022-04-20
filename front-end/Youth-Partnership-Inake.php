@@ -5,6 +5,19 @@
   }
 </style>
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: normal;
+    margin-right: 10px;
+    font-size: 40px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    } 
+  </style>
   <meta charset="utf-8">
   <title>Youth Partnership Intake</title>
   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
@@ -17,10 +30,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
+ 
 <?php
     include_once('navbar.php');
 ?>
 <body>
+  <br><bh>Youth Partnership Intake Form</bh><br><br>
   <div class="col">
     <form name="mainForm" method="post">
       <b>Youth General Information:</b> <br>
@@ -30,7 +45,7 @@
       <label for="lastName">Last Name: </label>
       <input id="lastName" name="lastName" placeholder="Last Name"/ required>
       <br>
-      Address:<br>
+      Address:
       <div class="col">
         <input name="street" id="street" placeholder="Street"><br>
         <input name="inputCity" id="inputCity" placeholder="City"><br>
@@ -109,6 +124,7 @@
       <br>
       <label for="Relationship">Relationship:</label>
       <select name="Relationship">
+      <option disabled selected>--Select--</option>
         <option value="PrimaryCaregiver">Primary Caregiver</option>
         <option value="Sibling">Sibling</option>
         <option value="OtherAdultReletive">Other Adult Reletive</option>
@@ -234,7 +250,8 @@
       <label for="Other General Intrests">Other General Interests:</label><br>
       <textarea form="mainForm" name="GeneralInterests[]" rows="5" cols="80"></textarea>
       <br>
-      <input type="submit" value="Submit">
+      <input type="submit" value="Submit"><>
+      <br>
     </form>
   </div>
   </body>
@@ -376,7 +393,7 @@ if($_POST){
 			else{
 				$general_str = NULL;
 			}
-		#var_dump($_POST);
+		var_dump($_POST);
 		$stmt = $db->prepare("INSERT INTO `youth_intake`
                         VALUES (:cmo_option, :education_level,:grade,:school_name, :health_name, :parent_relationship, :personal_goals, :first_career,
 						:second_career,:learning_intrests,:general_intrests, :youth_address ,:school_address,:parent_address,
