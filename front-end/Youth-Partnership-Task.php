@@ -7,9 +7,21 @@ require("config.php");
 $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 $db = new PDO($connection_string, $dbuser, $dbpass);
 
-$stmt = $db->prepare("SELECT EmpID, firstname, lastname FROM `personal_info` WHERE EmpID >= 1");
+$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:u_id');
+$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$fso_id = $data[0]['fso_id'];
+
+$stmt = $db->prepare('SELECT person_id FROM users WHERE fso_id=:u_id');
+$stmt->execute(['u_id' => $fso_id]);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$id_list = array_column($data, 'person_id');
+
+
+$select = 'SELECT firstname,lastname FROM personal_info WHERE person_id in ('.implode(',', $id_list).')';
+$stmt = $db->prepare($select);
 $stmt->execute();
-$staff_list = $stmt->fetchAll();
+$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST) && !empty($_POST['date_task'])){
 	
@@ -74,7 +86,7 @@ if(isset($_POST) && !empty($_POST['date_task'])){
       PHP dropdown of staff
 	    <select name="staff_id">
 		    <?php
-		    foreach($staff_list as $staff) {
+		    foreach($data2 as $staff) {
             var_dump($staff);
 			    ?>
 		    <option value="<?=$staff['person_id']?>"><?php echo $staff['firstname'] . ' ' . $staff['lastname'];?></option>
