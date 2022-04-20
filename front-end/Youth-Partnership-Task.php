@@ -1,40 +1,36 @@
 <?php
-
+require("config.php");
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-ini_set('display_errors', 1);
+  ini_set('display_errors', 1);
 
 // get staff list first
-$staff_list = [];
-
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 $db = new PDO($connection_string, $dbuser, $dbpass);
 
-$sql = "SELECT person_id, firstname, lastname FROM `personal_info`";
-$stmt = $db->query($sql);
-
-while($row = $query->fetch()) {
-	$staff_list[] = $row;	
-}
+$stmt = $db->prepare("SELECT EmpID, firstname, lastname FROM `personal_info` WHERE EmpID >= 1");
+$stmt->execute();
+$staff_list = $stmt->fetchAll();
 
 if(isset($_POST) && !empty($_POST['date_task'])){
-	
+
 	$date_task = $_POST['date_task'];
 	$duration_hours = $_POST['duration_hours'];
 	$duration_minutes = $_POST['duration_minutes'];
 	$staff_id = $_POST['staff_id'];
 	$description = $_POST['description'];
-	
+
 	try{
 		$db = new PDO($connection_string, $dbuser, $dbpass);
-		
+
 		$sql = "INSERT INTO `YouthPartnershipTask` (`date_of_task`, `duration_hours`, `duration_minutes`, `staff_id`, `description`)";
 		$sql .= " VALUES('$date_task', '$duration_hours', '$duration_minutes', '$staff_id', '$description')";
-		
+
 		if($db->query($sql)) {
 			$success = "Success";
-		} esle {
+		} else {
 			$error = "Error";
 		}
-		
+
     }
      catch(Exception $e){
           echo $e->getMessage();
@@ -79,10 +75,11 @@ if(isset($_POST) && !empty($_POST['date_task'])){
 	    <select name="staff_id">
 		    <?php
 		    foreach($staff_list as $staff) {
+            var_dump($staff);
 			    ?>
 		    <option value="<?=$staff['person_id']?>"><?php echo $staff['firstname'] . ' ' . $staff['lastname'];?></option>
 		    <?php
-		    } 
+		    }
 		    ?>
 	    </select>
       <br>
@@ -93,6 +90,3 @@ if(isset($_POST) && !empty($_POST['date_task'])){
   </div>
   </body>
 </html>
-
-
-	
