@@ -41,9 +41,17 @@
 	echo "<br>";
 	echo "<div class='col'>";
 	echo "<table id='tbl' border='1'>";
+	echo "<td>Number of Families Referred from PerformCare</td>";
+	echo "<td>Number of Initial Visits Completed with Care Manager</td>";
+	echo "<td>Number of Initial Visits Completed Without Care Manager</td>";
+	echo "<td>Number of Face to Face Meetings with Families</td>";
+	echo "<td>Number of CFT's Participated In</td>";
+	echo "<td>Number of FANS Completed</td>";
+	echo "<td>Time Spent on All Activities Captured with Time Function in Cyber</td>";
+	echo "<td>Time Spent on All Face to Face activities witn time Function in Cyber</td>";
+	echo "<tr>";
 	#var_dump($_SESSION);
 	try{
-		echo "<td>Number of Families Referred from PerformCare</td>";
 		$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:u_id');
 		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -54,17 +62,90 @@
 		$stmt = $db->prepare('SELECT id FROM users WHERE fso_id=:u_id');
 		$stmt->execute(['u_id' => $fso_id]);
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data = array_column($data, 'id');
+		
+		#$in = join(',', array_fill(0, count($data), '?'));
+		
+		#var_dump($data);
+		$select = 'SELECT COUNT(referred) FROM family WHERE uid in ('.implode(',', $data).') and referred = :ref';
+		#var_dump($select);
+		$stmt = $db->prepare($select);
+		$stmt->execute(['ref' => 'PreformCare']);
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
 		
-		$peformcare_count = 0;
-		foreach($data as $row){
-			$stmt = $db->prepare('SELECT COUNT(referred) FROM family WHERE uid=:u_id and referred = :ref');
-			$stmt->execute(['u_id' => $row['id'], 'ref' => 'PreformCare']);
-			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$peformcare_count += $data2[0]['COUNT(referred)'];
-		}
+		$peformcare_count = $data2[0]['COUNT(referred)'];
 		
-		var_dump($peformcare_count);
+		$select = 'SELECT fid FROM family WHERE uid in ('.implode(',', $data).')';
+		$stmt = $db->prepare($select);
+		$stmt->execute();
+		$family_ids = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$family_ids = array_column($family_ids, 'fid');
+		
+		
+		$select = 'SELECT caremanager FROM cases WHERE fid in ('.implode(',', $family_ids).')';
+		$stmt = $db->prepare($select);
+		$stmt->execute();
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data2 = array_column($data2, 'caremanager');
+		
+		$without_care = count(array_keys($data2,"None"));
+		
+		$care_count = sizeof($data2) - $without_care;
+		
+		$select = 'SELECT duration FROM progress_note WHERE f_id in ('.implode(',', $family_ids).') and (note_type = :note or note_type = :note1)';
+		$stmt = $db->prepare($select);
+		$stmt->execute(['note' => 'FSO:InitialFacetoFaceVisit','note1' => 'FSO:OngoingFacetoFace']);
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data2 = array_column($data2, 'duration');
+		
+		$facetoface = array_sum($data2);
+		
+		$select = 'SELECT COUNT(note_type) FROM progress_note WHERE f_id in ('.implode(',', $family_ids).') and note_type = :note';
+		$stmt = $db->prepare($select);
+		$stmt->execute(['note' => 'FSO:Child/FamilyParticipation']);
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		#$data2 = array_column($data2, 'note_type');
+		
+		$CFT_count = $data2[0]['COUNT(note_type)'];
+		
+		$select = 'SELECT COUNT(f_id) FROM fans WHERE f_id in ('.implode(',', $family_ids).')';
+		$stmt = $db->prepare($select);
+		$stmt->execute();
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		#$data2 = array_column($data2, 'note_type');
+		
+		$FANS_count = $data2[0]['COUNT(f_id)'];
+		
+		$select = 'SELECT duration FROM progress_note WHERE f_id in ('.implode(',', $family_ids).')';
+		$stmt = $db->prepare($select);
+		$stmt->execute();
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data2 = array_column($data2, 'duration');
+		
+		$total_time = array_sum($data2);
+		
+		$select = 'SELECT duration FROM progress_note WHERE f_id in ('.implode(',', $family_ids).') and (note_type = :note or note_type = :note1 or note_type = :note2)';
+		$stmt = $db->prepare($select);
+		$stmt->execute(['note' => 'FSO:InitialFacetoFaceVisit','note1' => 'FSO:OngoingFacetoFace','note2' => 'FSO:Child/FamilyParticipation']);
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data2 = array_column($data2, 'duration');
+		
+		$F2F_duration = array_sum($data2);
+		
+		var_dump($data2);
+		
+		
+		
+		echo "<td>" . $peformcare_count . "</td>";
+		echo "<td>" . $without_care . "</td>";
+		echo "<td>" . $care_count . "</td>";
+		echo "<td>" . $facetoface . "</td>";
+		echo "<td>" . $peformcare_count . "</td>";
+		echo "<td>" . $FANS_count . "</td>";
+		echo "<td>" . $total_time . "</td>";
+		echo "<td>" . $F2F_duration . "</td>";
+		
 	}
 	
 	catch(Exception $e){
