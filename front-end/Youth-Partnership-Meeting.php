@@ -1,3 +1,39 @@
+<?php
+require("config.php");
+include_once('navbar.php');
+	
+$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+$db = new PDO($connection_string, $dbuser, $dbpass);
+
+$stmt = $db->prepare('SELECT fso_id FROM users WHERE id=:u_id');
+$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$fso_id = $data[0]['fso_id'];
+
+$stmt = $db->prepare('SELECT id FROM users WHERE fso_id=:u_id');
+$stmt->execute(['u_id' => $fso_id]);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$data = array_column($data, 'id');
+
+
+$select = 'SELECT youth_id,youth_person FROM youth_intake WHERE u_id in ('.implode(',', $data).')';
+$stmt = $db->prepare($select);
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$youth_ids = array_column($data, 'youth_id');
+$youth_persons = array_column($data, 'youth_person');
+
+$select = 'SELECT firstname,lastname FROM personal_info WHERE person_id in ('.implode(',', $youth_persons).')';
+$stmt = $db->prepare($select);
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$counter = 0;
+
+var_dump($youth_persons);
+
+?>
+
+
 <html lang="en" dir="ltr">
 <style media="screen">
   purple{
@@ -30,9 +66,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
-<?php
-    include_once('navbar.php');
-?>
+
 <body>
   <div class="col">
     <br><bh>Youth Partnership Meeting</bh><br><br>
@@ -41,14 +75,22 @@
       <input type="date" name="date_meet">
       <br>
       <label for="Meeting/Event Duration">Meeting/Event Duration:</label><br>
-      <input type="number" name=duration_hours" placeholder="Hours">
-      <input type="number" name=duration_minutes" placeholder="Minutes"><br><br>
+      <input type="number" name="duration_hours" placeholder="Hours">
+      <input type="number" name="duration_minutes" placeholder="Minutes"><br><br>
       <label for="Type of Meeting">Type of Meeting:</label>
       <input type="text" name="type_meeting">
       <br>
       <b>Participants:</b><br>
-	    <input type="checkbox" name="participants" value="1"/>
-      Option to check off the enrolled participants (youth) that attended the meeting that day
+	    
+	  <?php
+		    foreach($data as $youth) {
+            #var_dump($staff);
+			    ?>
+			<input type="checkbox" name="participants[]" value=<?php echo "'$youth_ids[$counter]'" ?> >
+			<label for=<?php echo $youth_ids[$counter]; ?>><?php echo $youth['firstname'] . ' ' . $youth['lastname']; ?></label><br>
+		    <?php
+			$counter++;} 
+		    ?>
       <br>
       <label for="Notes">Notes:</label><br>
       <textarea form="mainForm" name="notes" rows="5" cols="80"></textarea>
@@ -65,7 +107,6 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display_errors', 1);
 
-require("config.php");
 
 if(!(isset($_SESSION['role']))){
   header("Location: index.php");
@@ -74,11 +115,12 @@ if(!(isset($_SESSION['role']))){
 	header("Location: index.php");
 }
 
-$connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 
+#var_dump($data2);
 
 if(isset($_POST) && !empty($_POST['submit_meeting'])){
+	var_dump($_POST);
 	$date_meet = $_POST['date_meet'];
 	$duration_hours = $_POST['duration_hours'];
 	$duration_minutes = $_POST['duration_meetins'];
@@ -87,14 +129,16 @@ if(isset($_POST) && !empty($_POST['submit_meeting'])){
 	$participants = $_POST['participants'];
 	$notes = $_POST['notes'];
 	
-	$sql = "INSERT INTO `YouthPartnershipMeeting` (`date_of_meeting`, `duration_hours`, `duration_minutes`, `type_of_meeting`, `participants`, `notes`)";
-	$sql .= " VALUES('$date_meet', '$duration_hours', '$duration_minutes', '$type_meeting', '$participants', '$notes')";
 	
-	if ($db->query($sql)) {
-		echo '<script>alert("Success")</script>';
+	try{
 		
-	} else {
-		echo '<script>alert("Database error")</script>';
+		
+		
 	}
+	
+	catch(Exception $e){
+			echo $e->getMessage();
+			exit();
+	   }
 	
 }

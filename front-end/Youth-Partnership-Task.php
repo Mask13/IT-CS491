@@ -87,7 +87,7 @@ if(isset($_POST) && !empty($_POST['date_task'])){
 	    <select name="staff_id">
 		    <?php
 		    foreach($data2 as $staff) {
-            var_dump($staff);
+            #var_dump($staff);
 			    ?>
 		    <option value="<?=$staff['person_id']?>"><?php echo $staff['firstname'] . ' ' . $staff['lastname'];?></option>
 		    <?php
