@@ -6,12 +6,25 @@
 
 
 <html lang="en" dir="ltr">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: bolder;
+    margin-right: 10px;
+    font-size: 40px;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    }
+  </style>
 
 
 	<head>
 
 
-		<title>display_meet</title>
+		<title>Meeting Records</title>
 
 
 
@@ -67,10 +80,10 @@
 		}
 	</style>
 
-
+<body>
+    <br><h1>Meeting Records</h1>
+</body>
 </html>
-
-
 
 
 
@@ -107,7 +120,7 @@
 
 
 	echo "<br>";
-	
+
 	echo "<div class='col'>";
 
 	echo "<table border='1'>";
@@ -146,7 +159,7 @@
 
 
 
-	
+
 
 
 
@@ -158,7 +171,7 @@
 
 		$data = $stmt->fetchAll();
 
-		
+
 
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 
@@ -205,4 +218,3 @@
 		}
 
 ?>
-
