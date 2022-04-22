@@ -81,7 +81,9 @@
 	</style>
 
 <body>
+  <div class = "col">
     <br><h1>Meeting Records</h1>
+  </div>
 </body>
 </html>
 
