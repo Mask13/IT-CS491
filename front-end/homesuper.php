@@ -29,6 +29,10 @@ if(($_SESSION['role']==1)){
     padding: 8px;
     border-width: 2px;
   }
+  .coll2{
+	  padding-left: 15px;
+	  width: 50%;
+  }
   split{
 	  width: 300px;
     float: right;
@@ -44,10 +48,14 @@ if(($_SESSION['role']==1)){
     padding: 5px;
     padding-top: 9px;
     width: 95%;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
   }
   bh{
     font-size: 40px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 </style>
 
@@ -70,6 +78,16 @@ if(($_SESSION['role']==1)){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </head>
+<script>
+	function getDates(){
+    var date = new Date(document.getElementById("dateInput").valueAsDate);
+		var startDateString = date.toISOString().slice(0, 19).replace('T', ' ');
+    var dateEnd = date
+		document.getElementById("p").innerText = jsDate;
+    <?php #$_SESSION['startdate'] = jsDate;
+		echo jsDate;?>
+	}
+</script>
 
 <?php
   include_once('navbar.php');
@@ -79,7 +97,7 @@ if(($_SESSION['role']==1)){
 <br>
 <split>
 	<div class="col">
-	<h3><b>User Information</b></h3><br>
+	<h3><b>User Information</b><br><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg></h3><br>
 	<h5>Username</h5>
 
 	<?php
@@ -91,6 +109,7 @@ if(($_SESSION['role']==1)){
 		echo $data1[0]["username"];
 	?>
 	<br><br>
+
 	<h5>FSO</h5>
 	<?php
 		$stmt = $db->prepare('SELECT name FROM FSO WHERE fso_id=:id');
@@ -104,24 +123,71 @@ if(($_SESSION['role']==1)){
     </button>
 	</div>
 </split>
+
 <split>
   <div class="col">
-    <h3><b>Supervisor Tools</b></h3><br>
-    <button class="change" onclick="window.location.href='http://familysupportorganizationo.sg-host.com/register.php';">
+	<h3><b>Supervisor Tools</b><br><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M7.875 2.292a.125.125 0 00-.032.018A7.24 7.24 0 004.75 8.25a7.247 7.247 0 003.654 6.297c.57.327.982.955.941 1.682v.002l-.317 6.058a.75.75 0 11-1.498-.078l.317-6.062v-.004c.006-.09-.047-.215-.188-.296A8.747 8.747 0 013.25 8.25a8.74 8.74 0 013.732-7.169 1.547 1.547 0 011.709-.064c.484.292.809.835.809 1.46v4.714a.25.25 0 00.119.213l2.25 1.385c.08.05.182.05.262 0l2.25-1.385a.25.25 0 00.119-.213V2.478c0-.626.325-1.169.81-1.461a1.547 1.547 0 011.708.064 8.74 8.74 0 013.732 7.17 8.747 8.747 0 01-4.41 7.598c-.14.081-.193.206-.188.296v.004l.318 6.062a.75.75 0 11-1.498.078l-.317-6.058v-.002c-.041-.727.37-1.355.94-1.682A7.247 7.247 0 0019.25 8.25a7.24 7.24 0 00-3.093-5.94.125.125 0 00-.032-.018l-.01-.001c-.003 0-.014 0-.031.01-.036.022-.084.079-.084.177V7.19a1.75 1.75 0 01-.833 1.49l-2.25 1.385a1.75 1.75 0 01-1.834 0l-2.25-1.384A1.75 1.75 0 018 7.192V2.477c0-.098-.048-.155-.084-.176a.062.062 0 00-.031-.011l-.01.001z"></path></svg></h3><br>
+
+	<button class="change" onclick="window.location.href='http://familysupportorganizationo.sg-host.com/register.php';">
       <h5>Add New User</h5>
     </button>
-    <button class="change" onclick="window.location.href='http://familysupportorganizationo.sg-host.com/FSOFam-Display.php';">
-      <h5>View Families under Employees</h5>
-    </button>
+  <form method="POST">
+    <input name="dateInput" type="month" required></input>
+    <input class="change" type="submit" value = "View State Report"/>
+  </form>
+  <?php
+    if(isset($_POST['dateInput'])){
+      $Month = $_POST[dateInput];
+      $StartDate = $Month."-01 00:00:00";
+      $dateArr = explode("-",$Month);
+      $newMonth =  intval($dateArr[1])+1;
+      if($newMonth == 13){
+        $newMonth = 1;
+        $dateArr[0] = intval($dateArr[0])+1;
+      }
+      $dateArr[1] = $newMonth;
+      $EndMonth = implode("-",$dateArr);
+      $EndDate = $EndMonth."-01 00:00:00";
+      $_SESSION['reportdateStart'] = $StartDate;
+      $_SESSION['reportdateEnd'] = $EndDate;
+    }
+  ?>
+	<div id="p"></div>
   </div>
 </split>
-<div class="col">
+<split>
+	<div class="col">
+	<h3><b>View My Records</b><br><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M14.53 15.59a8.25 8.25 0 111.06-1.06l5.69 5.69a.75.75 0 11-1.06 1.06l-5.69-5.69zM2.5 9.25a6.75 6.75 0 1111.74 4.547.746.746 0 00-.443.442A6.75 6.75 0 012.5 9.25z"></path></svg></h3><br>
+	<h5>Select a form to display:</h5>
 
-    <bh>Assigned Families</bh>
+  <head>
+  <style>
+  h3{text-align: center;}
+  p{text-align: center;}
+
+  </style>
+
+            <a href="display_comm.php">Community Meetings</a><br>
+            <a href="display_prog.php">Family Notes</a><br>
+            <a href="display_fans.php">FAN Assesment</a><br>
+            <a href="display_meet.php">FSO Meeting</a><br>
+            <a href="display_intake.php">Intake</a><br>
+            <a href="display_satisfaction.php">Satisfaction Feedback</a><br>
+            <a href="display_outmeet.php">Outreach Meeting</a><br>
+            <a href="display_warm.php">Warmline Records</a><br>
+
+          </div>
+
+
+
+</split>
+<div class="coll2">
+
+<bh>My Assigned Families<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill-rule="evenodd" d="M11.03 2.59a1.5 1.5 0 011.94 0l7.5 6.363a1.5 1.5 0 01.53 1.144V19.5a1.5 1.5 0 01-1.5 1.5h-5.75a.75.75 0 01-.75-.75V14h-2v6.25a.75.75 0 01-.75.75H4.5A1.5 1.5 0 013 19.5v-9.403c0-.44.194-.859.53-1.144l7.5-6.363zM12 3.734l-7.5 6.363V19.5h5v-6.25a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v6.25h5v-9.403L12 3.734z"></path></svg></bh>
     <?php
     	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
     	ini_set('display_errors', 1);
-    
+
     	echo "<br>";
     	echo "<table border='1'>";
     	echo "<td> ID </td>";
@@ -129,21 +195,21 @@ if(($_SESSION['role']==1)){
     	echo "<td> Last Name </td>";
     	echo "<td> Case Number </td>";
     	#echo "<td> Assigned Employee </td>";
-    
+
     	try{
-    
+
     		$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
-    
+
     		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
-    
+
     		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    
-    
+
+
+
     		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-    
+
     		foreach ($data as $family_id){
-    
+
     			$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
     			$stmt->execute(['pers_id' => $family_id['person_id']]);
     			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -157,7 +223,7 @@ if(($_SESSION['role']==1)){
     				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
     				#var_dump($data3);
     				#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-    
+
     				echo "<td>" . $family_id['fid'] . "</td>";
     				echo "<td>" . $row["firstname"] . "</td>";
     				echo "<td>" . $row["lastname"] . "</td>";
@@ -165,14 +231,14 @@ if(($_SESSION['role']==1)){
     				#echo "<td>" . $data1[0]["username"] . "</td>";
     				}
     		}
-    
+
     	}
-    
+
     	catch(Exception $e){
     			echo $e->getMessage();
     			exit();
     		}
-    
+
     ?>
 
 </div>
