@@ -19,28 +19,36 @@ if(($_SESSION['role']==2)){
 <!DOCTYPE html>
 
 <html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
 <style media="screen">
   table{
     border-color:#004060;
-    border-width: 3px;
+    border-width: 2px;
     background-color: white;
   }
   th, td{
     padding: 8px;
     border-width: 2px;
   }
+  .coll2{
+	  padding-left: 15px;
+	  width: 50%;
+  }
   split{
-	  width: 300px;
+	width: 300px;
     float: right;
     padding-top: 30px;
     margin-right: 10px;
-	  border-radius: 10px;
+	border-radius: 10px;
     border-style: solid;
-	  padding-bottom: 10px;
+	padding-bottom: 10px;
     background-color: white;
   }
   body{
-      background-color: #e0f5f5;
+      background-color: #ffffbf;
   }
   .change{
 	  border-radius: 10px;
@@ -49,8 +57,9 @@ if(($_SESSION['role']==2)){
     width: 95%;
   }
   bh{
-    font-size: 40px;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 31px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
   }
 </style>
 
@@ -82,7 +91,7 @@ if(($_SESSION['role']==2)){
 <br>
 <split>
 	<div class="col">
-	<h3><b>User Information</b></h3><br>
+	<h3><b>User Information</b><br><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg></h3><br>
 	<h5>Username</h5>
 
 	<?php
@@ -94,44 +103,71 @@ if(($_SESSION['role']==2)){
 		echo $data1[0]["username"];
 	?>
 	<br><br>
-	<h5>FSO</h5>
+	<h5>Family Support Organization</h5>
 	<?php
 		$stmt = $db->prepare('SELECT name FROM FSO WHERE fso_id=:id');
 		$stmt->execute(['id' => $data1[0]["fso_id"]]);
 		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo $data2[0]["name"];
 	?>
-	<br><br>
+	<br>
+  <br>
 	<button class="change" onclick="window.location.href='http://familysupportorganizationo.sg-host.com/changepassword.php';">
       <h5>Change Password</h5>
     </button>
+    <br>
 	</div>
 </split>
-<div class="col">
+<split>
+	<div class="col">
 
-<bh>Assigned Families</bh>
+	<h3><b>View My Records</b><br><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M14.53 15.59a8.25 8.25 0 111.06-1.06l5.69 5.69a.75.75 0 11-1.06 1.06l-5.69-5.69zM2.5 9.25a6.75 6.75 0 1111.74 4.547.746.746 0 00-.443.442A6.75 6.75 0 012.5 9.25z"></path></svg></h3><br>
+	<h5>Select a form to display:</h5>
+
+
+  <head>
+  <style>
+  h3{text-align: center;}
+  p{text-align: center;}
+
+
+  </style>
+
+
+            <a href="display_comm.php">Community Meetings</a><br>
+            <a href="display_prog.php">Family Notes</a><br>
+            <a href="display_fans.php">FAN Assesment</a><br>
+            <a href="display_meet.php">FSO Meeting</a><br>
+            <a href="display_intake.php">Intake</a><br>
+            <a href="display_satisfaction.php">Satisfaction Feedback</a><br>
+            <a href="display_outmeet.php">Outreach Meeting</a><br>
+            <a href="display_warm.php">Warmline Records</a><br>
+            <a href="display_youth.php">Youth Records</a><br>
+
+          </div>
+
+
+
+</split>
+
+<div class="coll2">
+<bh>My Assigned Families<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill-rule="evenodd" d="M11.03 2.59a1.5 1.5 0 011.94 0l7.5 6.363a1.5 1.5 0 01.53 1.144V19.5a1.5 1.5 0 01-1.5 1.5h-5.75a.75.75 0 01-.75-.75V14h-2v6.25a.75.75 0 01-.75.75H4.5A1.5 1.5 0 013 19.5v-9.403c0-.44.194-.859.53-1.144l7.5-6.363zM12 3.734l-7.5 6.363V19.5h5v-6.25a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v6.25h5v-9.403L12 3.734z"></path></svg></bh>
+
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	ini_set('display_errors', 1);
-
 	echo "<br>";
-	echo "<table border='1'>";
+	echo "<table border='1' id='assignedTable'>";
 	echo "<td> ID </td>";
 	echo "<td> First Name </td>";
 	echo "<td> Last Name </td>";
 	echo "<td> Case Number </td>";
 	#echo "<td> Assigned Employee </td>";
-
 	try{
 
 		$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
-
 		$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
-
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-
 		#echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
 
 		foreach ($data as $family_id){
@@ -157,17 +193,15 @@ if(($_SESSION['role']==2)){
 				#echo "<td>" . $data1[0]["username"] . "</td>";
 				}
 		}
-
 	}
-
 	catch(Exception $e){
 			echo $e->getMessage();
 			exit();
 		}
 
-?>
 
+
+?>
 </div>
 </body>
-
 </html>

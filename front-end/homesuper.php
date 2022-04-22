@@ -175,6 +175,7 @@ if(($_SESSION['role']==1)){
             <a href="display_satisfaction.php">Satisfaction Feedback</a><br>
             <a href="display_outmeet.php">Outreach Meeting</a><br>
             <a href="display_warm.php">Warmline Records</a><br>
+            <a href="display_youth.php">Youth Records</a><br>
 
           </div>
 
