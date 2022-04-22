@@ -11,12 +11,26 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-	</head>
-
-	
-
-	<style>
-		table{
+	</header>
+   <?php
+      include_once('navbar.php');
+  ?>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    bh{
+    font-weight: regular;
+    margin-right: 10px;
+    font-size: 40px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    }
+    body{
+      background-color: white;
+    }
+    table{
 			border-color:#004060;
 			border-width: 3px;
 		}
@@ -24,13 +38,15 @@
 			padding: 8px;
 			border-width: 2px;
 		}
-	</style>
-	
+  </style>
+<body>
+  <br>
+  <bh>Satisfaction Survey Feedback</bh><br>
+</body>
+
+
 </html>
 
-<?php
-      include_once('navbar.php');
-  ?>
 <?php
 	require("config.php");
 	session_start();
@@ -62,21 +78,21 @@
 	echo "<td> I would recommend the FSO services to other families </td>";
 
 		try{
-			
+
 			$stmt = $db->prepare('SELECT fid,person_id FROM family WHERE uid=:u_id');
 
 			$stmt->execute(['u_id' => intval($_SESSION["ID"])]);
 
 			$data = $stmt->fetchAll();
 
-			
+
 
 			foreach ($data as $family_id){
-				
+
 				$stmt = $db->prepare('SELECT * FROM survey WHERE f_id=:fam_id');
 				$stmt->execute(['fam_id' => $family_id[0]]);
 				$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$stmt = $db->prepare('SELECT firstname,lastname FROM personal_info WHERE person_id=:pers_id');
 				$stmt->execute(['pers_id' => $family_id['person_id']]);
 				$data3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -100,7 +116,7 @@
 		}
 
 	}
-	
+
 
 	catch(Exception $e){
 			echo $e->getMessage();
@@ -108,20 +124,3 @@
 		}
 
 ?>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-  <style>
-    bh{
-    font-weight: bolder;
-    margin-right: 10px;
-    font-size: 40px;
-    padding: 10px;
-    font-family: 'Montserrat', sans-serif;
-    } 
-  </style>
-  <bh>Satisfaction Survey Feedback</bh><br><br>
-	<style>
-  
